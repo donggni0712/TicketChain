@@ -1,4 +1,5 @@
 // File: contracts/introspection/IKIP13.sol
+
 pragma solidity ^0.5.0;
 
 /**
@@ -1135,6 +1136,7 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
     mapping(uint256 => string) private _ticketNames;
     mapping(uint256 => uint256) private _ticketExpireds;
     mapping(uint256 => string) private _ticketPlaceNames;
+    mapping(uint256 => bool) private _ticketCanTrade;
 
     /*
      *     bytes4(keccak256('name()')) == 0x06fdde03
@@ -1205,6 +1207,14 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
         return _ticketPlaceNames[tokenId];
     }
 
+    function ticketCanTrade(uint256 tokenId) external view returns (bool) {
+        require(
+            _exists(tokenId),
+            "KIP17Metadata: URI query for nonexistent token"
+        );
+        return _ticketCanTrade[tokenId];
+    }
+
     /**
      * @dev Internal function to set the token URI for a given token.
      * Reverts if the token ID does not exist.
@@ -1233,6 +1243,14 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
             "KIP17Metadata: URI set of nonexistent token"
         );
         _ticketPlaceNames[tokenId] = uri;
+    }
+
+    function _setcanTrade(uint256 tokenId, bool uri) internal {
+        require(
+            _exists(tokenId),
+            "KIP17Metadata: URI set of nonexistent token"
+        );
+        _ticketCanTrade[tokenId] = uri;
     }
     /**
      * @dev Internal function to burn a specific token.
@@ -1405,12 +1423,15 @@ contract KIP17MetadataMintable is KIP13, KIP17, KIP17Metadata, MinterRole {
         uint256 tokenId,
         string memory ticketName,
         uint256 expired,
-        string memory placeName
+        string memory placeName,
+        bool canTrade
     ) public returns (bool) {
         _mint(to, tokenId);
         _setticketName(tokenId, ticketName);
         _setexpired(tokenId, expired);
         _setplaceName(tokenId, placeName);
+        _setcanTrade(tokenId, canTrade);
+
         return true;
     }
 }
