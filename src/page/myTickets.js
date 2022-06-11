@@ -51,7 +51,7 @@ function MyTickets() {
     <div className="MyTickets">
       <Head myAddress={myAddress} getUserData={getUserData}/>
 
-      <QrComponent qrvalue={qrvalue}/>
+      <QrComponent qrvalue={qrvalue} setQrvalue ={setQrvalue}/>
 
       <Tickets tickets={tickets} />
       <PopUp showModal={showModal} setShowModal={setShowModal} modalData={modalData}/>
