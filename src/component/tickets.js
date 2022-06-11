@@ -1,14 +1,15 @@
 import {Row,Col,Card} from 'react-bootstrap';
+import './tickets.css'
 
 function Tickets({tickets}){
   const rows = tickets.slice(tickets.length/2);
 
 
-  return <div className="tickets" style={{padding:0, width:"100%"}}>
+  return <div className="tickets">
             {rows.map((o,rowIndex)=>{
               return <Row key = {`row:${rowIndex}`}>
-                <Col style={{marginRight:0, paddingRight:0}}>
-                  <Card>
+                <Col className="ticket_col">
+                  <Card className='ticket'>
                      <Card.Img src={tickets[rowIndex*2].info.imgSrc}/>
                     {tickets[rowIndex*2].info.ticketName}<br/>
                     {tickets[rowIndex*2].info.placeName}<br/>
@@ -17,10 +18,10 @@ function Tickets({tickets}){
                     {tickets[rowIndex*2].info.canTrade == true ? <>교환 가능</>: <>교환 불가능</>}
                   </Card>
                 </Col>
-                <Col style={{marginRight:0, paddingRight:0}}>
+                <Col className='ticket_col'>
                   {
                     tickets.length > rowIndex*2+1 ? (
-                    <Card>
+                    <Card className='ticket'>
                      <Card.Img src={tickets[rowIndex*2+1].info.imgSrc}/>
                     {tickets[rowIndex*2+1].info.ticketName}<br/>
                     {tickets[rowIndex*2+1].info.placeName}<br/>

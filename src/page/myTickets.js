@@ -43,6 +43,9 @@ function MyTickets() {
     setTickets(_tickets);
   }
 
+  useEffect((el)=>{
+    fetchMyTickets()
+  },[])
 
   return (
     <div className="MyTickets">
@@ -50,7 +53,6 @@ function MyTickets() {
 
       <QrComponent qrvalue={qrvalue}/>
 
-        <button onClick={()=>{fetchMyTickets()}}>test</button>
       <Tickets tickets={tickets} />
       <PopUp showModal={showModal} setShowModal={setShowModal} modalData={modalData}/>
     </div>

@@ -1,0 +1,9 @@
+.header .footer{
+    border: 0px;
+    opacity: 0.8px;
+}
+
+.okButton{
+    background-color:#810034;
+    border-color:#810034;
+}

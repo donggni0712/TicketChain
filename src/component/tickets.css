@@ -1,0 +1,13 @@
+.ticket {
+    margin: 1%;
+}
+
+.tickets {
+    padding: 0px;
+    width: 100%;
+}
+
+.ticket_col {
+    margin-right: 0px;
+    padding-right: 0px;
+}

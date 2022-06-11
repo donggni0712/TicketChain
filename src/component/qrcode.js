@@ -1,12 +1,13 @@
 import {Container} from 'react-bootstrap';
 import {DEFAULT_QR_CODE} from '../env'
 import QRCode from "qrcode.react";
+import './qrcode.css'
 
 function QrComponent({qrvalue}){
 
     return  <div>{qrvalue !== DEFAULT_QR_CODE ? 
-         <Container className='qrcomponent' style={{backgroundColor:'white', width:300,height:300,padding:20}}> 
-          <QRCode value={qrvalue} size={256} style={{margin:"auto"}}/>
+         <Container className='qrcomponent'> 
+          <QRCode value={qrvalue} size={256}/>
         </Container>
         :null}
         </div>
