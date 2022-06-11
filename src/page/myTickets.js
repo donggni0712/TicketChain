@@ -2,18 +2,18 @@ import {fetchTicketsOf} from '../api/UseCaver';
 import {useState, useEffect} from 'react';
 import * as KlipAPI from "../api/UseKlip.js"
 
-//environment  that file is gitignored, so you have to make that file
+//environment that file is gitignored, so you have to make that file
 import {DEFAULT_ADDRESS,DEFAULT_QR_CODE} from '../env';
- 
+
 //Components
 import Head from '../component/head';
-import PopUp from '../component/modal'
-import QrComponent from '../component/qrcode'
+import PopUp from '../component/modal';
+import QrComponent from '../component/qrcode';
 
 function MyTickets() {
   const [qrvalue, setQrvalue] = useState(DEFAULT_QR_CODE);
-  const [tickets,setTickets] = useState([])
-  const [myAddress,setMyAddress] = useState(DEFAULT_ADDRESS)
+  const [tickets, setTickets] = useState([])
+  const [myAddress, setMyAddress] = useState(DEFAULT_ADDRESS)
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState({
     title:"MODAL",
@@ -40,7 +40,7 @@ function MyTickets() {
 
 
   return (
-    <div className="App">
+    <div className="MyTickets">
       <Head myAddress={myAddress} getUserData={getUserData}/>
 
       <QrComponent qrvalue={qrvalue}/>
@@ -49,7 +49,6 @@ function MyTickets() {
       <div>{tickets.map((el)=>{
         return <div key={el.id}>{el.name}</div>
       })}</div> */}
-
 
       <PopUp showModal={showModal} setShowModal={setShowModal} modalData={modalData}/>
     </div>
