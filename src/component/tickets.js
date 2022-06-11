@@ -9,9 +9,11 @@ function Tickets({tickets}){
               return <Row key = {`row:${rowIndex}`}>
                 <Col style={{marginRight:0, paddingRight:0}}>
                   <Card>
+                     <Card.Img src={tickets[rowIndex*2].info.imgSrc}/>
                     {tickets[rowIndex*2].info.ticketName}<br/>
                     {tickets[rowIndex*2].info.placeName}<br/>
                     {tickets[rowIndex*2].info.expired}<br/>
+                    {tickets[rowIndex*2].info.webUrl}<br/>
                     {tickets[rowIndex*2].info.canTrade == true ? <>교환 가능</>: <>교환 불가능</>}
                   </Card>
                 </Col>
@@ -19,9 +21,11 @@ function Tickets({tickets}){
                   {
                     tickets.length > rowIndex*2+1 ? (
                     <Card>
+                     <Card.Img src={tickets[rowIndex*2+1].info.imgSrc}/>
                     {tickets[rowIndex*2+1].info.ticketName}<br/>
                     {tickets[rowIndex*2+1].info.placeName}<br/>
                     {tickets[rowIndex*2+1].info.expired}<br/>
+                    {tickets[rowIndex*2+1].info.webUrl}<br/>
                     {tickets[rowIndex*2+1].info.canTrade == true ? <>교환 가능</>: <>교환 불가능</>}
                     </Card>) : null
                   }

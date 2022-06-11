@@ -52,7 +52,7 @@ function MyTickets() {
 
         <button onClick={()=>{fetchMyTickets()}}>test</button>
       <Tickets tickets={tickets} />
-        <PopUp showModal={showModal} setShowModal={setShowModal} modalData={modalData}/>
+      <PopUp showModal={showModal} setShowModal={setShowModal} modalData={modalData}/>
     </div>
   );
 }

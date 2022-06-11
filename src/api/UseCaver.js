@@ -33,11 +33,15 @@ export const fetchTicketsOf = async (address)=>{
     const _expired = await TICKETCHAINContract.methods.ticketExpired(tokenIds[i]).call();
     const _placeName = await TICKETCHAINContract.methods.ticketPlaceName(tokenIds[i]).call();
     const _canTrade = await TICKETCHAINContract.methods.ticketCanTrade(tokenIds[i]).call();
+    const _imgSrc = await TICKETCHAINContract.methods.ticketImgsrc(tokenIds[i]).call();
+    const _WebUrl = await TICKETCHAINContract.methods.ticketWeburl(tokenIds[i]).call();
     const _ticketInfo = {
       ticketName : _ticketname,
       placeName : _placeName,
       expired : _expired,
-      canTrade : _canTrade
+      canTrade : _canTrade,
+      imgSrc : _imgSrc,
+      webUrl : _WebUrl
     }
     console.log(_ticketInfo)
     ticketInfos.push(_ticketInfo);
