@@ -6,13 +6,13 @@ const APP_NAME = "TICKET_CHAIN";
 const isMobile = window.screen.width >= 1280 ? false : true;
 
 const getKlipAccessUrl = (method, request_key) =>{
-  if(method == "OR"){
+  if(method === "OR"){
     return `https://klipwallet.com/?target=/a2a?request_key=${request_key}`;
   }
-  if(method == "IOS"){
+  if(method === "IOS"){
     return `kakaotalk://klipwallet/open?url=https://klipwallet.com/?target=/a2a?request_key=${request_key}`;
   }
-  if(method == "android"){
+  if(method === "android"){
     return `kakaotalk://klipwallet/open?url=https://klipwallet.com/?target=/a2a?request_key=${request_key}`;
     }
   

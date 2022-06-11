@@ -108,6 +108,14 @@
 			{
 				"name": "canTrade",
 				"type": "bool"
+			},
+			{
+				"name": "imgsrc",
+				"type": "string"
+			},
+			{
+				"name": "weburl",
+				"type": "string"
 			}
 		],
 		"name": "mintWithticketName",
@@ -261,7 +269,7 @@
 				"type": "uint256"
 			},
 			{
-				"name": "Contract_address",
+				"name": "contractAddress",
 				"type": "address"
 			}
 		],
@@ -717,6 +725,25 @@
 				"type": "uint256"
 			}
 		],
+		"name": "ticketImgsrc",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
 		"name": "ticketName",
 		"outputs": [
 			{
@@ -737,6 +764,25 @@
 			}
 		],
 		"name": "ticketPlaceName",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "ticketWeburl",
 		"outputs": [
 			{
 				"name": "",

@@ -27,16 +27,25 @@ export const fetchTicketsOf = async (address)=>{
     tokenIds.push(id);
   }
   // Fetch Token Names
-  const tokenNames = [];
+  const ticketInfos = [];
   for(let i=0;i<_balance;i++){
-    const name = await  TICKETCHAINContract.methods.ticketName(tokenIds[i]).call();
-        console.log(`name = ${name}`)
-    tokenNames.push(name);
+    const _ticketname = await  TICKETCHAINContract.methods.ticketName(tokenIds[i]).call();
+    const _expired = await TICKETCHAINContract.methods.ticketExpired(tokenIds[i]).call();
+    const _placeName = await TICKETCHAINContract.methods.ticketPlaceName(tokenIds[i]).call();
+    const _canTrade = await TICKETCHAINContract.methods.ticketCanTrade(tokenIds[i]).call();
+    const _ticketInfo = {
+      ticketName : _ticketname,
+      placeName : _placeName,
+      expired : _expired,
+      canTrade : _canTrade
+    }
+    console.log(_ticketInfo)
+    ticketInfos.push(_ticketInfo);
   }
 
   const nfts = [];
   for(let i=0;i<_balance;i++){
-    nfts.push({name: tokenNames[i], id:tokenIds[i]})
+    nfts.push({info: ticketInfos[i], id:tokenIds[i]})
   }
 
   return nfts;

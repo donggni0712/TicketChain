@@ -1119,6 +1119,16 @@ contract IKIP17Metadata is IKIP17 {
         external
         view
         returns (string memory);
+
+    function ticketImgsrc(uint256 tokenId)
+        external
+        view
+        returns (string memory);
+
+    function ticketWeburl(uint256 tokenId)
+        external
+        view
+        returns (string memory);
 }
 
 // File: contracts/token/KIP17/KIP17Metadata.sol
@@ -1137,7 +1147,8 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
     mapping(uint256 => uint256) private _ticketExpireds;
     mapping(uint256 => string) private _ticketPlaceNames;
     mapping(uint256 => bool) private _ticketCanTrade;
-
+    mapping(uint256 => string) private _ticketImgsrc;
+    mapping(uint256 => string) private _ticketWeburl;
     /*
      *     bytes4(keccak256('name()')) == 0x06fdde03
      *     bytes4(keccak256('symbol()')) == 0x95d89b41
@@ -1215,6 +1226,30 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
         return _ticketCanTrade[tokenId];
     }
 
+    function ticketImgsrc(uint256 tokenId)
+        external
+        view
+        returns (string memory)
+    {
+        require(
+            _exists(tokenId),
+            "KIP17Metadata: URI query for nonexistent token"
+        );
+        return _ticketImgsrc[tokenId];
+    }
+
+    function ticketWeburl(uint256 tokenId)
+        external
+        view
+        returns (string memory)
+    {
+        require(
+            _exists(tokenId),
+            "KIP17Metadata: URI query for nonexistent token"
+        );
+        return _ticketWeburl[tokenId];
+    }
+
     /**
      * @dev Internal function to set the token URI for a given token.
      * Reverts if the token ID does not exist.
@@ -1251,6 +1286,22 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
             "KIP17Metadata: URI set of nonexistent token"
         );
         _ticketCanTrade[tokenId] = uri;
+    }
+
+    function _setImgsrc(uint256 tokenId, string memory uri) internal {
+        require(
+            _exists(tokenId),
+            "KIP17Metadata: URI set of nonexistent token"
+        );
+        _ticketImgsrc[tokenId] = uri;
+    }
+
+    function _setWeburl(uint256 tokenId, string memory uri) internal {
+        require(
+            _exists(tokenId),
+            "KIP17Metadata: URI set of nonexistent token"
+        );
+        _ticketWeburl[tokenId] = uri;
     }
     /**
      * @dev Internal function to burn a specific token.
@@ -1424,14 +1475,17 @@ contract KIP17MetadataMintable is KIP13, KIP17, KIP17Metadata, MinterRole {
         string memory ticketName,
         uint256 expired,
         string memory placeName,
-        bool canTrade
+        bool canTrade,
+        string memory imgsrc,
+        string memory weburl
     ) public returns (bool) {
         _mint(to, tokenId);
         _setticketName(tokenId, ticketName);
         _setexpired(tokenId, expired);
         _setplaceName(tokenId, placeName);
         _setcanTrade(tokenId, canTrade);
-
+        _setImgsrc(tokenId, imgsrc);
+        _setWeburl(tokenId, weburl);
         return true;
     }
 }
@@ -1675,8 +1729,13 @@ contract KIP17Pausable is KIP13, KIP17, Pausable {
     function transferFrom(
         address from,
         address to,
-        uint256 tokenId
+        uint256 tokenId,
+        address contractAddress
     ) public whenNotPaused {
+        require(
+            KIP17Metadata(contractAddress).ticketCanTrade(tokenId),
+            "This ticket can not be traded"
+        );
         super.transferFrom(from, to, tokenId);
     }
 }

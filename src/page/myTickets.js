@@ -6,6 +6,7 @@ import * as KlipAPI from "../api/UseKlip.js"
 import {DEFAULT_ADDRESS,DEFAULT_QR_CODE} from '../env';
 
 //Components
+import Tickets from '../component/tickets';
 import Head from '../component/head';
 import PopUp from '../component/modal';
 import QrComponent from '../component/qrcode';
@@ -13,17 +14,12 @@ import QrComponent from '../component/qrcode';
 function MyTickets() {
   const [qrvalue, setQrvalue] = useState(DEFAULT_QR_CODE);
   const [tickets, setTickets] = useState([])
-  const [myAddress, setMyAddress] = useState(DEFAULT_ADDRESS)
+  const [myAddress, setMyAddress] = useState('0xbC14CB49b93Ee36AfdF4b49eCB7C9512f9353c93')
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState({
     title:"MODAL",
     onConfirm : () =>{},
   });
-
-  const getMyTicekts = async () =>{
-    const Tickets= await fetchTicketsOf('0xbC14CB49b93Ee36AfdF4b49eCB7C9512f9353c93');
-    setTickets(Tickets);
-  }
 
   const getUserData = () =>{
     setModalData({
@@ -37,6 +33,15 @@ function MyTickets() {
     setShowModal(true)
   }
 
+  const fetchMyTickets = async () =>{
+    // if (myAddress == DEFAULT_ADDRESS){
+    //   alert("NO ADDRESS");
+    //   return;
+    // }
+    const _tickets = await fetchTicketsOf(myAddress)
+    console.log(_tickets)
+    setTickets(_tickets);
+  }
 
 
   return (
@@ -45,12 +50,9 @@ function MyTickets() {
 
       <QrComponent qrvalue={qrvalue}/>
 
-      {/* <button onClick={()=>{getMyTicekts()}}>test</button>
-      <div>{tickets.map((el)=>{
-        return <div key={el.id}>{el.name}</div>
-      })}</div> */}
-
-      <PopUp showModal={showModal} setShowModal={setShowModal} modalData={modalData}/>
+        <button onClick={()=>{fetchMyTickets()}}>test</button>
+      <Tickets tickets={tickets} />
+        <PopUp showModal={showModal} setShowModal={setShowModal} modalData={modalData}/>
     </div>
   );
 }

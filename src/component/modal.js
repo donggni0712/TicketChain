@@ -1,7 +1,6 @@
 import {Button,Modal} from 'react-bootstrap';
 
 function PopUp({showModal,setShowModal, modalData}){
-    console.log(modalData)
     return <Modal className='popup' centered size="sm" show={showModal} onHide={()=>{
             setShowModal(false);
             }}>
