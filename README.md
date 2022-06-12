@@ -6,3 +6,8 @@
 
 ![](./doc/UI%3AUX.png)
 Figma를 활용한 UI 설계
+
+## Contract
+
+![](./doc/Smart_Contract.png)
+KIP17을 활용한 Smart_Contract 설계
