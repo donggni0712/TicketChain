@@ -10,6 +10,9 @@ function PopUp({showModal,setShowModal, modalData}){
                     {modalData.title}
                 </Modal.Title>
             </Modal.Header>
+            <Modal.Body className='body'>
+                {modalData.content}
+            </Modal.Body>
             <Modal.Footer className='footer'>
             <Button variant="secondary" onClick={()=>{setShowModal(false)}}>닫기</Button>
             <Button variant="primary" className="okButton" onClick={()=>{

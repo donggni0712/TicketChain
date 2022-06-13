@@ -1,0 +1,13 @@
+@import url("./font/font.css");
+
+.App{
+    background-color: #303030;
+    color:white;
+    height:100%;
+    font-family:"BMHANNAAir";
+}
+
+
+.component {
+    padding: 1rem;
+}

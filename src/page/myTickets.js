@@ -21,12 +21,14 @@ function MyTickets() {
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState({
     title:"MODAL",
+    content:"content",
     onConfirm : () =>{},
   });
 
   const getUserData = () =>{
     setModalData({
-      title:"Klip 지갑을 연동하시겠습니까?",
+      title:"Klip 지갑 연동",
+      content:"진행을 누르면 지갑 연동이 진행됩니다.",
       onConfirm: ()=>{
         KlipAPI.getAddress(setQrvalue, async (address)=>{
             setMyAddress(address);

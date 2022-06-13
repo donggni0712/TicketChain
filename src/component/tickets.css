@@ -1,9 +1,3 @@
-.ticket {
-    margin-left: 1rem;
-    margin-right: 1rem;
-    margin-bottom: 1rem;
-}
-
 .tickets {
     padding: 0px;
     width: 100%;
@@ -12,4 +6,24 @@
 .ticket_col {
     margin-right: 0px;
     padding-right: 0px;
+}
+
+.ticket{
+    padding:1rem;
+    border-color: #575757;
+    background-color: #454545;
+}
+
+.ticketName{
+    font-family: "BMDOHYEON";
+    font-size:xx-large;
+}
+
+.placeName{
+    font-family: "BMDOHYEON";
+    font-size: large;
+}
+
+.expired{
+    font-family: "BMHANNAPro";
 }

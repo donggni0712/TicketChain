@@ -1,6 +1,10 @@
-.header .footer{
+.header, .footer{
     border: 0px;
     opacity: 0.8px;
+}
+
+.header{
+    background-color: #dfdfdf;
 }
 
 .okButton{
