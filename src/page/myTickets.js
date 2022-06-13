@@ -6,10 +6,13 @@ import * as KlipAPI from "../api/UseKlip.js"
 import {DEFAULT_ADDRESS,DEFAULT_QR_CODE} from '../env';
 
 //Components
+import TicketSilder from '../component/ticketSlider';
 import Tickets from '../component/tickets';
 import Head from '../component/head';
 import PopUp from '../component/modal';
 import QrComponent from '../component/qrcode';
+
+const isMobile = window.screen.width >= 1280 ? false : true;
 
 function MyTickets() {
   const [qrvalue, setQrvalue] = useState(DEFAULT_QR_CODE);
@@ -53,7 +56,7 @@ function MyTickets() {
 
       <QrComponent qrvalue={qrvalue} setQrvalue ={setQrvalue}/>
 
-      <Tickets tickets={tickets} />
+      {isMobile ? <TicketSilder tickets={tickets} /> : <Tickets tickets={tickets}/>}
       <PopUp showModal={showModal} setShowModal={setShowModal} modalData={modalData}/>
     </div>
   );
