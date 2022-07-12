@@ -11,3 +11,7 @@ Figma를 활용한 UI 설계
 
 ![](./doc/Smart_Contract.png)
 KIP17을 활용한 Smart_Contract 설계
+
+## Todo
+
+[ ] Smart Contract -> burn 기능 구현 ( sub error )
