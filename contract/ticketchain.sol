@@ -57,38 +57,6 @@ contract IKIP17 is IKIP13 {
      */
     function ownerOf(uint256 tokenId) public view returns (address owner);
 
-    /**
-     * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
-     * another (`to`).
-     *
-     * Requirements:
-     * - `from`, `to` cannot be zero.
-     * - `tokenId` must be owned by `from`.
-     * - If the caller is not `from`, it must be have been allowed to move this
-     * NFT by either `approve` or `setApproveForAll`.
-     */
-    function safeTransferFrom(
-        address from,
-        address to,
-        uint256 tokenId
-    ) public;
-
-    /**
-     * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
-     * another (`to`).
-     *
-     * Requirements:
-     * - If the caller is not `from`, it must be approved to move this NFT by
-     * either `approve` or `setApproveForAll`.
-     */
-    function transferFrom(
-        address from,
-        address to,
-        uint256 tokenId
-    ) public;
-
-    function approve(address to, uint256 tokenId) public;
-
     function getApproved(uint256 tokenId)
         public
         view
@@ -100,13 +68,6 @@ contract IKIP17 is IKIP13 {
         public
         view
         returns (bool);
-
-    function safeTransferFrom(
-        address from,
-        address to,
-        uint256 tokenId,
-        bytes memory data
-    ) public;
 }
 
 // File: contracts/token/KIP17/IERC721Receiver.sol
@@ -556,27 +517,6 @@ contract KIP17 is KIP13, IKIP17 {
     }
 
     /**
-     * @dev Approves another address to transfer the given token ID
-     * The zero address indicates there is no approved address.
-     * There can only be one approved address per token at a given time.
-     * Can only be called by the token owner or an approved operator.
-     * @param to address to be approved for the given token ID
-     * @param tokenId uint256 ID of the token to be approved
-     */
-    function approve(address to, uint256 tokenId) public {
-        address owner = ownerOf(tokenId);
-        require(to != owner, "KIP17: approval to current owner");
-
-        require(
-            msg.sender == owner || isApprovedForAll(owner, msg.sender),
-            "KIP17: approve caller is not owner nor approved for all"
-        );
-
-        _tokenApprovals[tokenId] = to;
-        emit Approval(owner, to, tokenId);
-    }
-
-    /**
      * @dev Gets the approved address for a token ID, or zero if no address set
      * Reverts if the token ID does not exist.
      * @param tokenId uint256 ID of the token to query the approval of
@@ -638,50 +578,6 @@ contract KIP17 is KIP13, IKIP17 {
         );
 
         _transferFrom(from, to, tokenId);
-    }
-
-    /**
-     * @dev Safely transfers the ownership of a given token ID to another address
-     * If the target address is a contract, it must implement `onKIP17Received`,
-     * which is called upon a safe transfer, and return the magic value
-     * `bytes4(keccak256("onKIP17Received(address,address,uint256,bytes)"))`; otherwise,
-     * the transfer is reverted.
-     * Requires the msg.sender to be the owner, approved, or operator
-     * @param from current owner of the token
-     * @param to address to receive the ownership of the given token ID
-     * @param tokenId uint256 ID of the token to be transferred
-     */
-    function safeTransferFrom(
-        address from,
-        address to,
-        uint256 tokenId
-    ) public {
-        safeTransferFrom(from, to, tokenId, "");
-    }
-
-    /**
-     * @dev Safely transfers the ownership of a given token ID to another address
-     * If the target address is a contract, it must implement `onKIP17Received`,
-     * which is called upon a safe transfer, and return the magic value
-     * `bytes4(keccak256("onKIP17Received(address,address,uint256,bytes)"))`; otherwise,
-     * the transfer is reverted.
-     * Requires the msg.sender to be the owner, approved, or operator
-     * @param from current owner of the token
-     * @param to address to receive the ownership of the given token ID
-     * @param tokenId uint256 ID of the token to be transferred
-     * @param _data bytes data to send along with a safe transfer check
-     */
-    function safeTransferFrom(
-        address from,
-        address to,
-        uint256 tokenId,
-        bytes memory _data
-    ) public {
-        transferFrom(from, to, tokenId);
-        require(
-            _checkOnKIP17Received(from, to, tokenId, _data),
-            "KIP17: transfer to non KIP17Receiver implementer"
-        );
     }
 
     /**
@@ -978,20 +874,6 @@ contract KIP17Enumerable is KIP13, KIP17, IKIP17Enumerable {
     }
 
     /**
-     * @dev Internal function to mint a new token.
-     * Reverts if the given token ID already exists.
-     * @param to address the beneficiary that will own the minted token
-     * @param tokenId uint256 ID of the token to be minted
-     */
-    function _mint(address to, uint256 tokenId) internal {
-        super._mint(to, tokenId);
-
-        _addTokenToOwnerEnumeration(to, tokenId);
-
-        _addTokenToAllTokensEnumeration(tokenId);
-    }
-
-    /**
      * @dev Internal function to burn a specific token.
      * Reverts if the token does not exist.
      * Deprecated, use _burn(uint256) instead.
@@ -1129,6 +1011,8 @@ contract IKIP17Metadata is IKIP17 {
         external
         view
         returns (string memory);
+
+    function ticketPrice(uint256 tokenId) external view returns (uint256);
 }
 
 // File: contracts/token/KIP17/KIP17Metadata.sol
@@ -1149,6 +1033,7 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
     mapping(uint256 => bool) private _ticketCanTrade;
     mapping(uint256 => string) private _ticketImgsrc;
     mapping(uint256 => string) private _ticketWeburl;
+    mapping(uint256 => uint256) private _ticketPrice;
     /*
      *     bytes4(keccak256('name()')) == 0x06fdde03
      *     bytes4(keccak256('symbol()')) == 0x95d89b41
@@ -1250,6 +1135,14 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
         return _ticketWeburl[tokenId];
     }
 
+    function ticketPrice(uint256 tokenId) external view returns (uint256) {
+        require(
+            _exists(tokenId),
+            "KIP17Metadata: URI query for nonexistent token"
+        );
+        return _ticketPrice[tokenId];
+    }
+
     /**
      * @dev Internal function to set the token URI for a given token.
      * Reverts if the token ID does not exist.
@@ -1303,6 +1196,27 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
         );
         _ticketWeburl[tokenId] = uri;
     }
+
+    function _setPrice(uint256 tokenId, uint256 uri) internal {
+        require(
+            _exists(tokenId),
+            "KIP17Metadata: URI set of nonexistent token"
+        );
+        _ticketPrice[tokenId] = uri;
+    }
+
+    function SetPrice(uint256 tokenId, uint256 uri) public {
+        require(
+            _exists(tokenId),
+            "KIP17Metadata: URI set of nonexistent token"
+        );
+        require(
+            _isApprovedOrOwner(msg.sender, tokenId),
+            "KIP17: transfer caller is not owner nor approved"
+        );
+        _ticketPrice[tokenId] = uri;
+    }
+
     /**
      * @dev Internal function to burn a specific token.
      * Reverts if the token does not exist.
@@ -1310,20 +1224,36 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
      * @param owner owner of the token to burn
      * @param tokenId uint256 ID of the token being burned by the msg.sender
      */
-    // function _burn(address owner, uint256 tokenId) internal {
-    //     super._burn(owner, tokenId);
 
-    //     // Clear metadata (if any)
-    //     if (bytes(_ticketNames[tokenId]).length != 0) {
-    //         delete _ticketNames[tokenId];
-    //     }
-    //     if (bytes(ticketExpireds[tokenId]).length != 0) {
-    //         delete _ticketNames[tokenId];
-    //     }
-    //     if (bytes(_ticketPlaceNames[tokenId]).length != 0) {
-    //         delete _ticketPlaceNames[tokenId];
-    //     }
-    // }
+    function _burn(address owner, uint256 tokenId) internal {
+        super._burn(owner, tokenId);
+
+        // Clear metadata (if any)
+        if (bytes(_ticketNames[tokenId]).length != 0) {
+            delete _ticketNames[tokenId];
+        }
+        if (_ticketExpireds[tokenId] != 0) {
+            delete _ticketNames[tokenId];
+        }
+        if (bytes(_ticketPlaceNames[tokenId]).length != 0) {
+            delete _ticketPlaceNames[tokenId];
+        }
+        if (bytes(_ticketImgsrc[tokenId]).length != 0) {
+            delete _ticketImgsrc[tokenId];
+        }
+        if (bytes(_ticketWeburl[tokenId]).length != 0) {
+            delete _ticketWeburl[tokenId];
+        }
+        if (_ticketPrice[tokenId] != 0) {
+            delete _ticketPrice[tokenId];
+        }
+        if (
+            _ticketCanTrade[tokenId] == false ||
+            _ticketCanTrade[tokenId] == true
+        ) {
+            delete _ticketCanTrade[tokenId];
+        }
+    }
 }
 
 // File: contracts/token/KIP17/KIP17Full.sol
@@ -1469,7 +1399,7 @@ contract KIP17MetadataMintable is KIP13, KIP17, KIP17Metadata, MinterRole {
      * @param ticketName The token URI of the minted token.
      * @return A boolean that indicates if the operation was successful.
      */
-    function mintWithticketName(
+    function mintWithData(
         address to,
         uint256 tokenId,
         string memory ticketName,
@@ -1477,8 +1407,11 @@ contract KIP17MetadataMintable is KIP13, KIP17, KIP17Metadata, MinterRole {
         string memory placeName,
         bool canTrade,
         string memory imgsrc,
-        string memory weburl
+        string memory weburl,
+        uint256 price
     ) public returns (bool) {
+        require(isMinter(msg.sender), "You are not a minter");
+
         _mint(to, tokenId);
         _setticketName(tokenId, ticketName);
         _setexpired(tokenId, expired);
@@ -1486,6 +1419,7 @@ contract KIP17MetadataMintable is KIP13, KIP17, KIP17Metadata, MinterRole {
         _setcanTrade(tokenId, canTrade);
         _setImgsrc(tokenId, imgsrc);
         _setWeburl(tokenId, weburl);
+        _setPrice(tokenId, price);
         return true;
     }
 }
@@ -1515,17 +1449,6 @@ contract KIP17Mintable is KIP17, MinterRole {
     constructor() public {
         // register the supported interface to conform to KIP17Mintable via KIP13
         _registerInterface(_INTERFACE_ID_KIP17_MINTABLE);
-    }
-
-    /**
-     * @dev Function to mint tokens.
-     * @param to The address that will receive the minted tokens.
-     * @param tokenId The token id to mint.
-     * @return A boolean that indicates if the operation was successful.
-     */
-    function mint(address to, uint256 tokenId) public returns (bool) {
-        _mint(to, tokenId);
-        return true;
     }
 }
 
@@ -1718,14 +1641,6 @@ contract KIP17Pausable is KIP13, KIP17, Pausable {
         _registerInterface(_INTERFACE_ID_KIP17_PAUSABLE);
     }
 
-    function approve(address to, uint256 tokenId) public whenNotPaused {
-        super.approve(to, tokenId);
-    }
-
-    function setApprovalForAll(address to, bool approved) public whenNotPaused {
-        super.setApprovalForAll(to, approved);
-    }
-
     function transferFrom(
         address from,
         address to,
@@ -1791,38 +1706,6 @@ contract Ownable {
      */
     function isOwner() public view returns (bool) {
         return msg.sender == _owner;
-    }
-
-    /**
-     * @dev Leaves the contract without owner. It will not be possible to call
-     * `onlyOwner` functions anymore. Can only be called by the current owner.
-     *
-     * > Note: Renouncing ownership will leave the contract without an owner,
-     * thereby removing any functionality that is only available to the owner.
-     */
-    function renounceOwnership() public onlyOwner {
-        emit OwnershipTransferred(_owner, address(0));
-        _owner = address(0);
-    }
-
-    /**
-     * @dev Transfers ownership of the contract to a new account (`newOwner`).
-     * Can only be called by the current owner.
-     */
-    function transferOwnership(address payable newOwner) public onlyOwner {
-        _transferOwnership(newOwner);
-    }
-
-    /**
-     * @dev Transfers ownership of the contract to a new account (`newOwner`).
-     */
-    function _transferOwnership(address payable newOwner) internal {
-        require(
-            newOwner != address(0),
-            "Ownable: new owner is the zero address"
-        );
-        emit OwnershipTransferred(_owner, newOwner);
-        _owner = newOwner;
     }
 }
 

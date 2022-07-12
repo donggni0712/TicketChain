@@ -1,5 +1,5 @@
 // Klaytn IDE uses solidity 0.4.24, 0.5.6 versions.
-pragma solidity >=0.4.24 <=0.5.6;
+pragma solidity >=0.4.24 <=0.5.7;
 
 contract IKIP17Receiver {
     function onKIP17Received(
@@ -15,9 +15,13 @@ contract NFTSimple {
     string public symbol = "ticket";
 
     mapping(uint256 => address) public tokenOwner;
-    mapping(uint256 => string) public ticketName;
+    mapping(uint256 => string) public ticketNames;
     mapping(uint256 => uint256) public ticketExpired;
     mapping(uint256 => string) public ticketPlaceName;
+    mapping(uint256 => bool) public ticketCanTrade;
+    mapping(uint256 => string) public ticketHomepageurl;
+    mapping(uint256 => string) public ticketImgsrc;
+    mapping(uint256 => uint256) public ticketPrice;
 
     // 소유한 토큰 리스트
     mapping(address => uint256[]) private _ownedTokens;
@@ -29,16 +33,20 @@ contract NFTSimple {
     function mintWithTokenURI(
         address to,
         uint256 tokenId,
-        string memory ticketname,
+        string memory ticketName,
         uint256 expired,
-        string memory placeName
+        string memory placeName,
+        bool canTrade,
+        uint256 price
     ) public returns (bool) {
         // to에게 tokenId(일련번호)를 발행하겠다.
         // 적힐 글자는 tokenURI
         tokenOwner[tokenId] = to;
-        ticketName[tokenId] = ticketname;
+        ticketNames[tokenId] = ticketName;
         ticketExpired[tokenId] = expired;
         ticketPlaceName[tokenId] = placeName;
+        ticketCanTrade[tokenId] = canTrade;
+        ticketPrice[tokenId] = price;
 
         // add token to the list
         _ownedTokens[to].push(tokenId);
@@ -52,21 +60,21 @@ contract NFTSimple {
         uint256 tokenId,
         bytes memory _data
     ) public {
-        // require(from == msg.sender, "from != msg.sender");
-        // require(
-        //     from == tokenOwner[tokenId],
-        //     "you are not the owner of the token"
-        // );
+        require(from == msg.sender, "from != msg.sender");
+        require(
+            from == tokenOwner[tokenId],
+            "you are not the owner of the token"
+        );
         //
         _removeTokenFromList(from, tokenId);
         _ownedTokens[to].push(tokenId);
         //
         tokenOwner[tokenId] = to;
         //
-        // require(
-        //     _checkOnKIP17Received(from, to, tokenId, _data),
-        //     "KIP17: transfer to non KIP17Receiver implementer"
-        // );
+        require(
+            _checkOnKIP17Received(from, to, tokenId, _data),
+            "KIP17: transfer to non KIP17Receiver implementer"
+        );
     }
 
     function _removeTokenFromList(address from, uint256 tokenId) private {
@@ -90,8 +98,8 @@ contract NFTSimple {
         return _ownedTokens[owner];
     }
 
-    function setTicketName(uint256 id, string memory uri) public {
-        ticketName[id] = uri;
+    function setticketNames(uint256 id, string memory uri) public {
+        ticketNames[id] = uri;
     }
 
     function setExpired(uint256 id, uint256 uri) public {
@@ -100,6 +108,22 @@ contract NFTSimple {
 
     function setPlaceName(uint256 id, string memory uri) public {
         ticketPlaceName[id] = uri;
+    }
+
+    function setCanTrade(uint256 id, bool uri) public {
+        ticketCanTrade[id] = uri;
+    }
+
+    function setHomepageurl(uint256 id, string memory uri) public {
+        ticketHomepageurl[id] = uri;
+    }
+
+    function setImgsrc(uint256 id, string memory uri) public {
+        ticketImgsrc[id] = uri;
+    }
+
+    function setPrice(uint256 id, uint256 uri) public {
+        ticketPrice[id] = uri;
     }
 
     function _checkOnKIP17Received(
@@ -148,8 +172,20 @@ contract NFTSimple {
     }
 }
 
+interface other {
+    function ticketPrice(uint256 tokenId) external view returns (uint256);
+}
+
 contract NFTMarket {
     mapping(uint256 => address) public seller;
+
+    function getPrice(uint256 tokenId, address a)
+        public
+        view
+        returns (uint256)
+    {
+        return other(a).ticketPrice(tokenId);
+    }
 
     function buyNFT(uint256 tokenId, address NFT)
         public
@@ -158,8 +194,9 @@ contract NFTMarket {
     {
         address payable receiver = address(uint160(seller[tokenId]));
 
-        // Send 0.01 klay to Seller
-        //receiver.transfer(10**16);
+        //0.000001 klay = 10**12
+        uint256 price = other(NFT).ticketPrice(tokenId);
+        receiver.transfer(price * (10**12));
 
         // Send NFT if properly send klay
         NFTSimple(NFT).safeTransferFrom(
