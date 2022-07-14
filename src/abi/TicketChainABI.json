@@ -259,7 +259,7 @@
 		"outputs": [
 			{
 				"name": "",
-				"type": "bool"
+				"type": "uint256"
 			}
 		],
 		"payable": false,
@@ -391,6 +391,57 @@
 		"type": "function"
 	},
 	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"name": "ticketName",
+				"type": "string"
+			},
+			{
+				"name": "expired",
+				"type": "uint256"
+			},
+			{
+				"name": "placeName",
+				"type": "string"
+			},
+			{
+				"name": "canTrade",
+				"type": "uint256"
+			},
+			{
+				"name": "imgsrc",
+				"type": "string"
+			},
+			{
+				"name": "weburl",
+				"type": "string"
+			},
+			{
+				"name": "price",
+				"type": "uint256"
+			}
+		],
+		"name": "mintWithData",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"constant": true,
 		"inputs": [],
 		"name": "isOwner",
@@ -495,57 +546,6 @@
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"name": "ticketName",
-				"type": "string"
-			},
-			{
-				"name": "expired",
-				"type": "uint256"
-			},
-			{
-				"name": "placeName",
-				"type": "string"
-			},
-			{
-				"name": "canTrade",
-				"type": "bool"
-			},
-			{
-				"name": "imgsrc",
-				"type": "string"
-			},
-			{
-				"name": "weburl",
-				"type": "string"
-			},
-			{
-				"name": "price",
-				"type": "uint256"
-			}
-		],
-		"name": "mintWithData",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{

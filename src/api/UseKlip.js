@@ -25,13 +25,13 @@ export const buyCard = async ( tokenId, setQrvalue, callback) =>{
 }
 
 export const listingCard = async (fromAddress, tokenId, setQrvalue, callback) =>{
-  const functionJson = '{ "constant": false, "inputs": [ { "name": "from", "type": "address" }, { "name": "to", "type": "address" }, { "name": "tokenId", "type": "uint256" } ], "name": "safeTransferFrom", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }';
-    executeContract(TICKETCHAIN_CONTRACT_ADDRESS, functionJson, "0", `[\"${fromAddress}\",\"${TICKET_MARKET_CONTRACT_ADDRESS}\",\"${tokenId}\"]`,setQrvalue,callback );
+  const functionJson = '{ "constant": false, "inputs": [ { "name": "from", "type": "address" }, { "name": "to", "type": "address" }, { "name": "tokenId", "type": "uint256" }, { "name": "contractAddress", "type": "address" } ], "name": "transferFrom", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }';
+  executeContract(TICKETCHAIN_CONTRACT_ADDRESS, functionJson, "0", `[\"${fromAddress}\",\"${TICKET_MARKET_CONTRACT_ADDRESS}\",\"${tokenId}\",\"${TICKETCHAIN_CONTRACT_ADDRESS}\"]`,setQrvalue,callback );
 }
 
-export const mintCardWithURI = async (toAddress, tokenId, uri, setQrvalue, callback) =>{
-  const functionJson = '{ "constant": false, "inputs": [ { "name": "to", "type": "address" }, { "name": "tokenId", "type": "uint256" }, { "name": "tokenURI", "type": "string" } ], "name": "mintWithTokenURI", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }';
-  executeContract(TICKETCHAIN_CONTRACT_ADDRESS, functionJson, "0", `[\"${toAddress}\",\"${tokenId}\",\"${uri}\"]`,setQrvalue,callback );
+export const mintCardWithURI = async (toAddress, tokenId, ticketName,expired,placeName,canTrade, setQrvalue,imgsrc,weburl,price, callback) =>{
+  const functionJson = '{ "constant": false, "inputs": [ { "name": "to", "type": "address" }, { "name": "tokenId", "type": "uint256" }, { "name": "ticketName", "type": "string" }, { "name": "expired", "type": "uint256" }, { "name": "placeName", "type": "string" }, { "name": "canTrade", "type": "bool" }, { "name": "imgsrc", "type": "string" }, { "name": "weburl", "type": "string" }, { "name": "price", "type": "uint256" } ], "name": "mintWithData", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }';
+  executeContract(TICKETCHAIN_CONTRACT_ADDRESS, functionJson, "0", `[\"${toAddress}\",\"${tokenId}\",\"${ticketName}\",\"${expired}\",\"${placeName}\",\"${canTrade}\",\"${imgsrc}\",\"${weburl}\",\"${price}\"]`,setQrvalue,callback );
   
 }
 
