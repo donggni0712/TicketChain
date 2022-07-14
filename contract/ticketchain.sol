@@ -1028,7 +1028,7 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
     mapping(uint256 => string) private _ticketNames;
     mapping(uint256 => uint256) private _ticketExpireds;
     mapping(uint256 => string) private _ticketPlaceNames;
-    mapping(uint256 => uint256) private _ticketCanTrade;
+    mapping(uint256 => bool) private _ticketCanTrade;
     mapping(uint256 => string) private _ticketImgsrc;
     mapping(uint256 => string) private _ticketWeburl;
     mapping(uint256 => uint256) private _ticketPrice;
@@ -1101,7 +1101,7 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
         return _ticketPlaceNames[tokenId];
     }
 
-    function ticketCanTrade(uint256 tokenId) external view returns (uint256) {
+    function ticketCanTrade(uint256 tokenId) external view returns (bool) {
         require(
             _exists(tokenId),
             "KIP17Metadata: URI query for nonexistent token"
@@ -1171,7 +1171,7 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
         _ticketPlaceNames[tokenId] = uri;
     }
 
-    function _setcanTrade(uint256 tokenId, uint256 uri) internal {
+    function _setcanTrade(uint256 tokenId, bool uri) internal {
         require(
             _exists(tokenId),
             "KIP17Metadata: URI set of nonexistent token"
@@ -1245,7 +1245,10 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
         if (_ticketPrice[tokenId] != 0) {
             delete _ticketPrice[tokenId];
         }
-        if (_ticketCanTrade[tokenId] != 0) {
+        if (
+            _ticketCanTrade[tokenId] != true &&
+            _ticketCanTrade[tokenId] != false
+        ) {
             delete _ticketCanTrade[tokenId];
         }
     }
@@ -1400,7 +1403,7 @@ contract KIP17MetadataMintable is KIP13, KIP17, KIP17Metadata, MinterRole {
         string memory ticketName,
         uint256 expired,
         string memory placeName,
-        uint256 canTrade,
+        bool canTrade,
         string memory imgsrc,
         string memory weburl,
         uint256 price
@@ -1643,7 +1646,7 @@ contract KIP17Pausable is KIP13, KIP17, Pausable {
         address contractAddress
     ) public whenNotPaused {
         require(
-            KIP17Metadata(contractAddress).ticketCanTrade(tokenId) != 0,
+            KIP17Metadata(contractAddress).ticketCanTrade(tokenId),
             "This ticket can not be traded"
         );
         super.transferFrom(from, to, tokenId);
