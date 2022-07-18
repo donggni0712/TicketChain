@@ -3,14 +3,14 @@ import {DEFAULT_QR_CODE} from '../env'
 import QRCode from "qrcode.react";
 import './qrcode.css'
 
-function QrComponent({qrvalue, setQrvalue}){
+function TicketQR({qrvalue, setQrvalue}){
 
     return  <Modal centered show={qrvalue!=DEFAULT_QR_CODE} onHide={()=>{
             setQrvalue(DEFAULT_QR_CODE);
             }}>
             <Modal.Header closeButton className="header">
                 <Modal.Title>
-                    <>QRCode를 이용해 Klip지갑을 인증하세요.</>
+                    <>QRCode를 사용해 티켓을 사용하세요</>
                 </Modal.Title>
             </Modal.Header>
               {qrvalue !== DEFAULT_QR_CODE ? 
@@ -21,4 +21,4 @@ function QrComponent({qrvalue, setQrvalue}){
         </Modal>
 }
 
-export default QrComponent;
+export default TicketQR;

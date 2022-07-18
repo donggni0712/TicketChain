@@ -14,7 +14,7 @@ function App() {
   const [tab, setTab] = useState("MYTICKET");
   const [qrvalue, setQrvalue] = useState(DEFAULT_QR_CODE);
   const [showModal, setShowModal] = useState(false);
-  const [myAddress, setMyAddress] = useState('0xbC14CB49b93Ee36AfdF4b49eCB7C9512f9353c93')
+  const [myAddress, setMyAddress] = useState(DEFAULT_ADDRESS)
   const [modalData, setModalData] = useState({
     title:"MODAL",
     content:"content",
@@ -39,7 +39,7 @@ function App() {
       <Head myAddress={myAddress} getUserData={getUserData}/>
       <div className="component">
         {tab=="MYTICKET" ? <MyTickets myAddress={myAddress} qrvalue={qrvalue} setQrvalue={setQrvalue} showModal={showModal} setShowModal={setShowModal} modalData={modalData}/> : null}
-        {tab=="STORE" ? <Store/> : null}
+        {tab=="STORE" ? <Store myAddress={myAddress} qrvalue={qrvalue} setQrvalue={setQrvalue} showModal={showModal} setShowModal={setShowModal} modalData={modalData} setModalData={setModalData}/> : null}
         {tab=="TRADE" ? <Trade/> : null}
       </div>
       <Footer setTab={setTab}/>

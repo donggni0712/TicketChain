@@ -17,6 +17,14 @@ function MyTickets({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalDat
 
   const [tickets, setTickets] = useState([]);
 
+  const clickTicket =(id) =>{
+    var crypto = require('crypto');
+    var shasum = crypto.createHash('sha512');
+    shasum.update('id');
+    var output = shasum.digest('hex');
+     setQrvalue(output)
+  }
+
   const fetchMyTickets = async () =>{
     // if (myAddress == DEFAULT_ADDRESS){
     //   alert("NO ADDRESS");
@@ -36,7 +44,7 @@ function MyTickets({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalDat
 
       <QrComponent qrvalue={qrvalue} setQrvalue ={setQrvalue}/>
 
-      {isMobile ? <TicketSilder tickets={tickets} /> : <Tickets tickets={tickets}/>}
+      {isMobile ? <TicketSilder tickets={tickets} clickTicket={clickTicket} /> : <Tickets tickets={tickets} clickTicket={clickTicket}/>}
       <PopUp showModal={showModal} setShowModal={setShowModal} modalData={modalData}/>
 
     </div>

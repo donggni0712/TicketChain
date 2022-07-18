@@ -2,7 +2,7 @@ import {Card} from 'react-bootstrap';
 import './tickets.css'
 import Slider from "react-slick";
 
-function TicketSilder({tickets}){
+function TicketSilder({tickets, clickTicket}){
  const settings = {
       dots: true,
       infinite: true,
@@ -15,7 +15,9 @@ function TicketSilder({tickets}){
     <Slider {...settings}>
     {tickets.map((ticket,index)=>{    
                   return <div>
-                  <Card className='ticket'>
+                  <Card className='ticket'  onClick={()=>{
+                      clickTicket(tickets[index].info.id)
+                    }}>
                      <Card.Img src={tickets[index].info.imgSrc}/>
                     {tickets[index].info.ticketName}<br/>
                     {tickets[index].info.placeName}<br/>

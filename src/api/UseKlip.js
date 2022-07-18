@@ -2,7 +2,7 @@ import axios from "axios";
 import { TICKETCHAIN_CONTRACT_ADDRESS, TICKET_MARKET_CONTRACT_ADDRESS } from "../env";
 
 const A2P_API_PREPARE_URL = "https://a2a-api.klipwallet.com/v2/a2a/prepare";
-const APP_NAME = "TICKET_CHAIN";
+const APP_NAME = "TicketChain";
 const isMobile = window.screen.width >= 1280 ? false : true;
 
 const getKlipAccessUrl = (method, request_key) =>{
@@ -19,8 +19,8 @@ const getKlipAccessUrl = (method, request_key) =>{
   return `kakaotalk://klipwallet/open?url=https://klipwallet.com/?target=/a2a?request_key=${request_key}`; 
 }
 
-export const buyCard = async ( tokenId, setQrvalue, callback) =>{
-  const functionJson = ' { "constant": false, "inputs": [ { "name": "tokenId", "type": "uint256" }, { "name": "NFT", "type": "address" } ], "name": "buyNFT", "outputs": [ { "name": "", "type": "bool" } ], "payable": true, "stateMutability": "payable", "type": "function" }';
+export const buyTicket = async ( tokenId, setQrvalue, callback) =>{
+  const functionJson = '{ "constant": false, "inputs": [ { "name": "tokenId", "type": "uint256" }, { "name": "NFT", "type": "address" } ], "name": "buyNFT", "outputs": [ { "name": "", "type": "bool" } ], "payable": true, "stateMutability": "payable", "type": "function" }';
   executeContract(TICKET_MARKET_CONTRACT_ADDRESS, functionJson, "10000000000000000", `[\"${tokenId}\",\"${TICKETCHAIN_CONTRACT_ADDRESS}\"]`,setQrvalue,callback );
 }
 

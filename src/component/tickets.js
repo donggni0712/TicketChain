@@ -1,7 +1,7 @@
 import {Row,Col,Card} from 'react-bootstrap';
 import './tickets.css'
 
-function Tickets({tickets}){
+function Tickets({tickets, clickTicket}){
   const rows = tickets.slice(tickets.length/2);
 
 
@@ -9,7 +9,9 @@ function Tickets({tickets}){
             {rows.map((o,rowIndex)=>{
               return <Row key = {`row:${rowIndex}`}>
                 <Col className="ticket_col">
-                  <Card className='ticket'>
+                  <Card className='ticket' onClick={()=>{
+                      clickTicket(tickets[rowIndex*2].info.id)
+                    }}>
                      <Card.Img className='imgSrc' src={tickets[rowIndex*2].info.imgSrc}/>
                     <span className='ticketName'>{tickets[rowIndex*2].info.ticketName}</span>
                     <span className='placeName'>{tickets[rowIndex*2].info.placeName}</span>
@@ -21,7 +23,9 @@ function Tickets({tickets}){
                 <Col className='ticket_col'>
                   {
                     tickets.length > rowIndex*2+1 ? (
-                    <Card className='ticket'>
+                    <Card className='ticket' onClick={()=>{
+                      clickTicket(tickets[rowIndex*2+1].info.id)
+                    }}>
                      <Card.Img className='imgSrc' src={tickets[rowIndex*2+1].info.imgSrc}/>
                     <span className='ticketName'>{tickets[rowIndex*2+1].info.ticketName}</span>
                     <span className='placeName'>{tickets[rowIndex*2+1].info.placeName}</span>
