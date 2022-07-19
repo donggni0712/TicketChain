@@ -1,25 +1,25 @@
 [
 	{
-		"constant": true,
+		"constant": false,
 		"inputs": [
 			{
 				"name": "tokenId",
 				"type": "uint256"
 			},
 			{
-				"name": "a",
+				"name": "Contractaddr",
 				"type": "address"
 			}
 		],
-		"name": "getPrice",
+		"name": "buyTicket",
 		"outputs": [
 			{
 				"name": "",
-				"type": "uint256"
+				"type": "bool"
 			}
 		],
-		"payable": false,
-		"stateMutability": "view",
+		"payable": true,
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -43,29 +43,6 @@
 		],
 		"payable": false,
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"name": "Contractaddr",
-				"type": "address"
-			}
-		],
-		"name": "buyTicket",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": true,
-		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -103,15 +80,61 @@
 		"constant": true,
 		"inputs": [
 			{
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"name": "a",
+				"type": "address"
+			}
+		],
+		"name": "getPrice",
+		"outputs": [
+			{
 				"name": "",
 				"type": "uint256"
 			}
 		],
-		"name": "seller",
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "seller",
+				"type": "address"
+			}
+		],
+		"name": "getTicketNumBySeller",
 		"outputs": [
 			{
 				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "owner",
 				"type": "address"
+			},
+			{
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "ticketOfSellerByIndex",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"payable": false,
