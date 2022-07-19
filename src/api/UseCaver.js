@@ -57,6 +57,11 @@ export const fetchTicketsOf = async (address)=>{
   return nfts;
 }
 
+export const getPrice = async (ticketId) => {
+  const price = await  TICKETCHAINContract.methods.ticketPrice(ticketId).call();
+  return price;
+}
+
 
 export const getBalance = (address) => {
   return caver.rpc.klay.getBalance(address).then((response) => {

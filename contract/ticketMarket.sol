@@ -1,5 +1,5 @@
 // Klaytn IDE uses solidity 0.4.24, 0.5.6 versions.
-pragma solidity >=0.4.24 <=0.5.7;
+pragma solidity >=0.4.24 <=0.5.6;
 
 contract IKIP17Receiver {
     function onKIP17Received(
@@ -10,18 +10,12 @@ contract IKIP17Receiver {
     ) public returns (bytes4);
 }
 
-contract NFTSimple {
+contract TicketSimple {
     string public name = "TicketChain";
-    string public symbol = "ticket";
+    string public symbol = "TCT";
 
     mapping(uint256 => address) public tokenOwner;
-    mapping(uint256 => string) public ticketNames;
-    mapping(uint256 => uint256) public ticketExpired;
-    mapping(uint256 => string) public ticketPlaceName;
-    mapping(uint256 => bool) public ticketCanTrade;
-    mapping(uint256 => string) public ticketHomepageurl;
-    mapping(uint256 => string) public ticketImgsrc;
-    mapping(uint256 => uint256) public ticketPrice;
+    mapping(uint256 => string) public tokenURIs;
 
     // 소유한 토큰 리스트
     mapping(address => uint256[]) private _ownedTokens;
@@ -33,20 +27,12 @@ contract NFTSimple {
     function mintWithTokenURI(
         address to,
         uint256 tokenId,
-        string memory ticketName,
-        uint256 expired,
-        string memory placeName,
-        bool canTrade,
-        uint256 price
+        string memory tokenURI
     ) public returns (bool) {
         // to에게 tokenId(일련번호)를 발행하겠다.
         // 적힐 글자는 tokenURI
         tokenOwner[tokenId] = to;
-        ticketNames[tokenId] = ticketName;
-        ticketExpired[tokenId] = expired;
-        ticketPlaceName[tokenId] = placeName;
-        ticketCanTrade[tokenId] = canTrade;
-        ticketPrice[tokenId] = price;
+        tokenURIs[tokenId] = tokenURI;
 
         // add token to the list
         _ownedTokens[to].push(tokenId);
@@ -98,32 +84,8 @@ contract NFTSimple {
         return _ownedTokens[owner];
     }
 
-    function setticketNames(uint256 id, string memory uri) public {
-        ticketNames[id] = uri;
-    }
-
-    function setExpired(uint256 id, uint256 uri) public {
-        ticketExpired[id] = uri;
-    }
-
-    function setPlaceName(uint256 id, string memory uri) public {
-        ticketPlaceName[id] = uri;
-    }
-
-    function setCanTrade(uint256 id, bool uri) public {
-        ticketCanTrade[id] = uri;
-    }
-
-    function setHomepageurl(uint256 id, string memory uri) public {
-        ticketHomepageurl[id] = uri;
-    }
-
-    function setImgsrc(uint256 id, string memory uri) public {
-        ticketImgsrc[id] = uri;
-    }
-
-    function setPrice(uint256 id, uint256 uri) public {
-        ticketPrice[id] = uri;
+    function setTokenUri(uint256 id, string memory uri) public {
+        tokenURIs[id] = uri;
     }
 
     function _checkOnKIP17Received(
@@ -176,7 +138,7 @@ interface other {
     function ticketPrice(uint256 tokenId) external view returns (uint256);
 }
 
-contract NFTMarket {
+contract TicketMarket {
     mapping(uint256 => address) public seller;
 
     function getPrice(uint256 tokenId, address a)
@@ -187,19 +149,34 @@ contract NFTMarket {
         return other(a).ticketPrice(tokenId);
     }
 
-    function buyNFT(uint256 tokenId, address NFT)
+    function CancelSelling(uint256 tokenId, address Contractaddr)
+        public
+        returns (bool)
+    {
+        require(
+            msg.sender == seller[tokenId],
+            "[TicketMarket] You are not seller of the ticket"
+        );
+        TicketSimple(Contractaddr).safeTransferFrom(
+            address(this),
+            msg.sender,
+            tokenId,
+            "0x00"
+        );
+    }
+
+    function buyTicket(uint256 tokenId, address Contractaddr)
         public
         payable
         returns (bool)
     {
         address payable receiver = address(uint160(seller[tokenId]));
 
-        //0.000001 klay = 10**12
-        uint256 price = other(NFT).ticketPrice(tokenId);
-        receiver.transfer(price * (10**12));
-
-        // Send NFT if properly send klay
-        NFTSimple(NFT).safeTransferFrom(
+        uint256 price = getPrice(tokenId, Contractaddr);
+        // Send 0.01 klay to Seller 10**16 = 0.01 klay
+        receiver.transfer(price);
+        // Send Ticket if properly send klay
+        TicketSimple(Contractaddr).safeTransferFrom(
             address(this),
             msg.sender,
             tokenId,
@@ -209,7 +186,7 @@ contract NFTMarket {
         return true;
     }
 
-    // Called when SafeTransferFrom called from NFT Contract
+    // Called when SafeTransferFrom called from Ticket Contract
     function onKIP17Received(
         address operator,
         address from,

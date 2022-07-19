@@ -1,5 +1,6 @@
 import axios from "axios";
 import {TICKETCHAIN_CONTRACT_ADDRESS, TICKET_MARKET_CONTRACT_ADDRESS } from "../env";
+import { getPrice } from "./UseCaver";
 
 const A2P_API_PREPARE_URL = "https://a2a-api.klipwallet.com/v2/a2a/prepare";
 const APP_NAME = "KLAY_MARKET";
@@ -20,8 +21,11 @@ const getKlipAccessUrl = (method, request_key) =>{
 }
 
 export const buyTicket = async ( tokenId, setQrvalue, callback) =>{
-  const functionJson = ' { "constant": false, "inputs": [ { "name": "tokenId", "type": "uint256" }, { "name": "NFT", "type": "address" } ], "name": "buyNFT", "outputs": [ { "name": "", "type": "bool" } ], "payable": true, "stateMutability": "payable", "type": "function" }';
-  executeContract(TICKET_MARKET_CONTRACT_ADDRESS, functionJson, "10000000000000000", `[\"${tokenId}\",\"${TICKETCHAIN_CONTRACT_ADDRESS}\"]`,setQrvalue,callback );
+  let price = await getPrice(tokenId);
+  console.log(price)
+  console.log(String(price))
+  const functionJson = ' { "constant": false, "inputs": [ { "name": "tokenId", "type": "uint256" }, { "name": "Contractaddr", "type": "address" } ], "name": "buyTicket", "outputs": [ { "name": "", "type": "bool" } ], "payable": true, "stateMutability": "payable", "type": "function" }';
+  executeContract(TICKET_MARKET_CONTRACT_ADDRESS, functionJson, String(price), `[\"${tokenId}\",\"${TICKETCHAIN_CONTRACT_ADDRESS}\"]`,setQrvalue,callback );
 }
 
 export const listingCard = async (fromAddress, tokenId, setQrvalue, callback) =>{
