@@ -22,7 +22,7 @@ export const fetchTicketsOf = async (address)=>{
   // Fetch Token IDs
   const tokenIds = [];
   for(let i=0;i<_balance;i++){
-    const id = await  TICKETCHAINContract.methods.tokenOfOwnerByIndex(address, i).call();
+    const id = await  TICKETCHAINContract.methods.ticketOfOwnerByIndex(address, i).call();
 //console.log(`id = ${id}`)
     tokenIds.push(id);
   }

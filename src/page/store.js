@@ -18,7 +18,7 @@ function Store({qrvalue,setQrvalue,showModal,setShowModal,modalData, setModalDat
     setModalData({
       title:"티켓 구매",
       content:"티켓을 구매하시겠습니까?",
-      onConfirm: (id)=>{
+      onConfirm: ()=>{
             KlipAPI.buyTicket(id,setQrvalue,(res)=>{
             alert(JSON.stringify(res))
       });
