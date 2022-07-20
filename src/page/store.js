@@ -1,6 +1,6 @@
 import {fetchTicketsOf, fetchTicketsBySellerOf} from '../api/UseCaver';
 import {useState, useEffect} from 'react';
-import {Button} from 'react-bootstrap';
+import {Tab,Tabs} from 'react-bootstrap';
 
 //environment that file is gitignored, so you have to make that file
 
@@ -100,11 +100,18 @@ function Store({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData, s
     <div className="MyTickets">
 
         <QrComponent qrvalue={qrvalue} setQrvalue ={setQrvalue}/>
-        <div>
-          <Button onClick={()=>setTab("STORE")}>상점</Button>
-          <Button onClick={()=>setTab("MYSTORE")}>내가 판매중인 티켓</Button>
-          <Button onClick={()=>setTab("MYTICKETS")}>내 티켓 판매하기</Button>
-        </div>
+        <Tabs
+          activeKey={tab}
+          onSelect={(k) => setTab(k)}
+          className="mb-3"
+        >
+          <Tab eventKey="STORE" title="상점" onClick={()=>setTab("STORE")}>
+          </Tab>
+          <Tab eventKey="MYSTORE" title="내가 판매중인 티켓" onClick={()=>setTab("MYSTORE")}>
+          </Tab>
+          <Tab eventKey="MYTICKETS" title="내 티켓 판매하기" onClick={()=>setTab("MYTICKETS")}>
+          </Tab>
+        </Tabs>
         <Tickets tickets={tickets} clickTicket={clickTicket}/>
         <PopUp showModal={showModal} setShowModal={setShowModal} modalData={modalData}/>
 

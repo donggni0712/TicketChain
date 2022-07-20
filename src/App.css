@@ -11,3 +11,11 @@
 .component {
     padding: 1rem;
 }
+
+.nav-link{
+    color: #d52a96;
+}
+
+.nav-link:hover {
+    color: #881b60;
+}

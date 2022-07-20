@@ -1,5 +1,5 @@
-import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import './App.css';
 import MyTickets from './page/myTickets'
 import Store from './page/store'
 import Trade from './page/trade'
