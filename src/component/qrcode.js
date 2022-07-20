@@ -10,7 +10,7 @@ function QrComponent({qrvalue, setQrvalue}){
             }}>
             <Modal.Header closeButton className="header">
                 <Modal.Title>
-                    <>QRCode를 이용해 Klip지갑을 인증하세요.</>
+                    <>QRCode를 이용해 진행하세요.</>
                 </Modal.Title>
             </Modal.Header>
               {qrvalue !== DEFAULT_QR_CODE ? 

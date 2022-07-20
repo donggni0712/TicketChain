@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import MyTickets from './page/myTickets'
 import Store from './page/store'
-import Trade from './page/trade'
+import Transfer from './page/transfer'
 import Footer from './component/footer'
 import Head from './component/head'
 import {useState, useEffect} from 'react';
@@ -38,9 +38,9 @@ function App() {
     <div className="App">
       <Head myAddress={myAddress} getUserData={getUserData}/>
       <div className="component">
-        {tab=="MYTICKET" ? <MyTickets myAddress={myAddress} qrvalue={qrvalue} setQrvalue={setQrvalue} showModal={showModal} setShowModal={setShowModal} modalData={modalData}/> : null}
+        {tab=="MYTICKET" ? <MyTickets myAddress={myAddress} qrvalue={qrvalue} setQrvalue={setQrvalue} showModal={showModal} setShowModal={setShowModal} modalData={modalData} setTab={setTab}/> : null}
         {tab=="STORE" ? <Store myAddress={myAddress} qrvalue={qrvalue} setQrvalue={setQrvalue} showModal={showModal} setShowModal={setShowModal} modalData={modalData} setModalData={setModalData}/> : null}
-        {tab=="TRADE" ? <Trade/> : null}
+        {tab=="TRANSFER" ? <Transfer/> : null}
       </div>
       <Footer setTab={setTab}/>
     </div>
