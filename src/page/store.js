@@ -1,6 +1,6 @@
 import {fetchTicketsOf} from '../api/UseCaver';
 import {useState, useEffect} from 'react';
-
+import {Button} from 'react-bootstrap';
 
 //environment that file is gitignored, so you have to make that file
 
@@ -12,7 +12,8 @@ import QrComponent from '../component/qrcode';
 import {TICKET_MARKET_CONTRACT_ADDRESS} from '../env'
 import * as KlipAPI from '../api/UseKlip'
 
-function Store({qrvalue,setQrvalue,showModal,setShowModal,modalData, setModalData}) {
+function Store({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData, setModalData}) {
+  const [tab, setTab] = useState("STORE");
 
   const buyTicket = (id) =>{
     setModalData({
@@ -27,27 +28,38 @@ function Store({qrvalue,setQrvalue,showModal,setShowModal,modalData, setModalDat
     setShowModal(true)
   }
   const [tickets, setTickets] = useState([]);
-  const fetchMyTickets = async () =>{
+  const fetchTickets = async (addr) =>{
     // if (myAddress == DEFAULT_ADDRESS){
     //   alert("NO ADDRESS");
     //   return;
     // }
-    const _tickets = await fetchTicketsOf(TICKET_MARKET_CONTRACT_ADDRESS)
+    const _tickets = await fetchTicketsOf(addr)
     console.log(_tickets)
     setTickets(_tickets);
   }
 
   useEffect((el)=>{
-    fetchMyTickets()
-  },[])
+    if(tab=="STORE"){
+      fetchTickets(TICKET_MARKET_CONTRACT_ADDRESS)
+    }
+    if(tab=="MYTICKETS"){
+      fetchTickets(myAddress)
+    }
+    if(tab=="MYSTORE"){
+      fetchTickets(myAddress)
+    }
+  },[tab])
   
   return (
     <div className="MyTickets">
 
         <QrComponent qrvalue={qrvalue} setQrvalue ={setQrvalue}/>
-
+        <div>
+          <Button onClick={()=>setTab("MYSTORE")}>상점</Button>
+          <Button onClick={()=>setTab("MYSTORE")}>내가 판매중인 티켓</Button>
+          <Button onClick={()=>setTab("MYTICKETS")}>내 티켓 판매하기</Button>
+        </div>
         <Tickets tickets={tickets} clickTicket={buyTicket}/>
-
         <PopUp showModal={showModal} setShowModal={setShowModal} modalData={modalData}/>
 
     </div>
