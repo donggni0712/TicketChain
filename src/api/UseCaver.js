@@ -59,15 +59,16 @@ export const fetchTicketsOf = async (address)=>{
   return nfts;
 }
 
-export const fetchTicketsBySeller = async (address)=>{
+export const fetchTicketsBySellerOf = async (address)=>{
   // Fetch Balance
+  console.log('call func')
    const _balance = await TICKETMARKETContract.methods.getTicketNumBySeller(address).call();
-  //console.log(`balance = ${_balance}`)
+  console.log(`balance = ${_balance}`)
   // Fetch Token IDs
   const tokenIds = [];
   for(let i=0;i<_balance;i++){
     const id = await  TICKETMARKETContract.methods.ticketOfSellerByIndex(address, i).call();
-//console.log(`id = ${id}`)
+    console.log(`id = ${id}`)
     tokenIds.push(id);
   }
   // Fetch Token Names
