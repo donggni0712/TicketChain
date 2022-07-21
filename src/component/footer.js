@@ -18,10 +18,10 @@ function Footer({setTab}){
                 <div>MY TICKET</div>
               </div>
                <div onClick={()=>{
-                setTab("TRADE")
+                setTab("TRANSFER")
               }}
               className="row d-flex flex-column justify-content-center align-items-center">
-                <div>TRADE</div>
+                <div>TRANSFER</div>
               </div>
             </div>
           </Nav>

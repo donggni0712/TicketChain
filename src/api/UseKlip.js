@@ -38,11 +38,16 @@ export const cancelTicket = async (tokenId, setQrvalue, callback) =>{
     executeContract(TICKET_MARKET_CONTRACT_ADDRESS, functionJson, "0", `[\"${tokenId}\",\"${TICKETCHAIN_CONTRACT_ADDRESS}\"]`,setQrvalue,callback );
 }
 
-export const mintCardWithURI = async (toAddress, tokenId, uri, setQrvalue, callback) =>{
+export const mintTicket = async (toAddress, tokenId, uri, setQrvalue, callback) =>{
   const functionJson = '{ "constant": false, "inputs": [ { "name": "to", "type": "address" }, { "name": "tokenId", "type": "uint256" }, { "name": "tokenURI", "type": "string" } ], "name": "mintWithTokenURI", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }';
   executeContract(TICKETCHAIN_CONTRACT_ADDRESS, functionJson, "0", `[\"${toAddress}\",\"${tokenId}\",\"${uri}\"]`,setQrvalue,callback );
-  
 }
+
+export const transferTicket = async (fromAddress, toAddress, tokenId, setQrvalue, callback) =>{
+  const functionJson = '{ "constant": false, "inputs": [ { "name": "from", "type": "address" }, { "name": "to", "type": "address" }, { "name": "tokenId", "type": "uint256" } ], "name": "safeTransferFrom", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }';
+    executeContract(TICKETCHAIN_CONTRACT_ADDRESS, functionJson, "0", `[\"${fromAddress}\",\"${toAddress}\",\"${tokenId}\"]`,setQrvalue,callback );
+}
+
 
 export const executeContract = (txTo, functionJSON, value, params, setQrvalue, callback) =>{
   axios

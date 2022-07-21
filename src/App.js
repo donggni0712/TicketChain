@@ -40,7 +40,7 @@ function App() {
       <div className="component">
         {tab=="MYTICKET" ? <MyTickets myAddress={myAddress} qrvalue={qrvalue} setQrvalue={setQrvalue} showModal={showModal} setShowModal={setShowModal} modalData={modalData} setTab={setTab}/> : null}
         {tab=="STORE" ? <Store myAddress={myAddress} qrvalue={qrvalue} setQrvalue={setQrvalue} showModal={showModal} setShowModal={setShowModal} modalData={modalData} setModalData={setModalData}/> : null}
-        {tab=="TRANSFER" ? <Transfer/> : null}
+        {tab=="TRANSFER" ? <Transfer myAddress={myAddress} qrvalue={qrvalue} setQrvalue={setQrvalue} showModal={showModal} setShowModal={setShowModal} modalData={modalData} setTab={setTab}/> : null}
       </div>
       <Footer setTab={setTab}/>
     </div>

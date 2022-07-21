@@ -11,7 +11,8 @@ import PopUp from '../component/modal';
 import QrComponent from '../component/qrcode';
 import {TICKET_MARKET_CONTRACT_ADDRESS} from '../env'
 import * as KlipAPI from '../api/UseKlip'
-import { click } from '@testing-library/user-event/dist/click';
+
+import {DEFAULT_ADDRESS} from '../env';
 
 function Store({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData, setModalData}) {
   const [tab, setTab] = useState("STORE");
@@ -89,9 +90,17 @@ function Store({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData, s
       fetchTickets(TICKET_MARKET_CONTRACT_ADDRESS)
     }
     if(tab=="MYTICKETS"){
+      if(myAddress==DEFAULT_ADDRESS){
+        setTickets([])
+        return;
+      }
       fetchTickets(myAddress);
     }
     if(tab=="MYSTORE"){
+      if(myAddress==DEFAULT_ADDRESS){
+        setTickets([])
+        return;
+      }
       fetchTicketsBySeller(myAddress)
     }
   },[tab])
