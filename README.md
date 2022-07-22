@@ -12,6 +12,20 @@ Figma를 활용한 UI 설계
 ![](./doc/Smart_Contract.png)
 KIP17을 활용한 Smart_Contract 설계
 
+## Stack
+
+![](./doc/TicketChainFlowChart.png)
+
+| 사용 스택 | 활용 방안                                         |
+| :-------- | :------------------------------------------------ |
+| Klaytn    | Cypress MainNet을 사용                            |
+| CaverJS   | klaytn node api를 이용하여 블록체인 데이터를 읽음 |
+| Klip API  | 사용자의 Klip계정 권한을 사용할 수 있도록 함      |
+| NodeJS    | API를 호출하고, 데이터를 파싱함                   |
+| ReactJS   | 유저에게 보여줄 화면 생성                         |
+
 ## Todo
 
-[ ] Smart Contract -> burn 기능 구현 ( sub error )
+[x] Smart Contract -> burn 기능 구현 ( sub error )
+[] 현재 티켓 정보가 blockchainNetwork에 직접 들어감. 이를 URI로 수정할 필요가 있음.
+[] 중복되는 정보의 티켓도 모두 모든 정보를 담고 있음. 이를 티켓ID등으로 묶어 낭비되는 저장공간을 줄일 필요가 있음.
