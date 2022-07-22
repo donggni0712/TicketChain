@@ -54,7 +54,7 @@ function Transfer({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData
 
   return (
     <div className="Transfer">
-        <div>전송할 티켓을 고르세용</div>
+      <div>전송할 티켓을 고르세용</div>
       <QrComponent qrvalue={qrvalue} setQrvalue ={setQrvalue}/>
 
       {component=="Tickets" ? <Tickets tickets={tickets} clickTicket={clickTicket}/> : null}

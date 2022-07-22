@@ -1,6 +1,15 @@
 .head{
+    display: flex ;
     background-color: #f40075;
     border-color: #f40075;
     font-size:25px;
     font-family: "BMDOHYEON";
+}
+
+.wallet{
+    width: 85%;
+}
+
+.headerButton{
+    margin-left: 2%;
 }

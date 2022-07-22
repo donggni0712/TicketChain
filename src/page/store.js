@@ -91,14 +91,18 @@ function Store({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData, s
     }
     if(tab=="MYTICKETS"){
       if(myAddress==DEFAULT_ADDRESS){
-        setTickets([])
+        alert(JSON.stringify("지갑을 먼저 연동하세요"))
+        setTab("STORE")
+        //setTickets([])
         return;
       }
       fetchTickets(myAddress);
     }
     if(tab=="MYSTORE"){
       if(myAddress==DEFAULT_ADDRESS){
-        setTickets([])
+        alert(JSON.stringify("지갑을 먼저 연동하세요"))
+        setTab("STORE")
+        //setTickets([])
         return;
       }
       fetchTicketsBySeller(myAddress)
