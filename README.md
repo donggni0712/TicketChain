@@ -24,6 +24,10 @@ KIP17을 활용한 Smart_Contract 설계
 | NodeJS    | API를 호출하고, 데이터를 파싱함                   |
 | ReactJS   | 유저에게 보여줄 화면 생성                         |
 
+## Requirement
+
+NodeJS V.16
+
 ## Todo
 
 [x] Smart Contract -> burn 기능 구현 ( sub error )
