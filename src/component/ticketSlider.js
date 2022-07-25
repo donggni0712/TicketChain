@@ -24,6 +24,7 @@ function TicketSilder({tickets, clickTicket}){
                     {tickets[index].info.expired}<br/>
                     {tickets[index].info.webUrl}<br/>
                     {tickets[index].info.canTrade == true ? <>교환 가능</>: <>교환 불가능</>}
+                    Price : {tickets[index].info.price}Klay<br/>
                   </Card>
                   </div>
     }

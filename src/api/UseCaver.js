@@ -38,6 +38,8 @@ export const fetchTicketsOf = async (address)=>{
     const _canTrade = await TICKETCHAINContract.methods.ticketCanTrade(tokenIds[i]).call();
     const _imgSrc = await TICKETCHAINContract.methods.ticketImgsrc(tokenIds[i]).call();
     const _WebUrl = await TICKETCHAINContract.methods.ticketWeburl(tokenIds[i]).call();
+    var _Price = await TICKETCHAINContract.methods.ticketPrice(tokenIds[i]).call();
+    _Price = _Price/1000000000000000000;
     const _ticketInfo = {
       id : _id,
       ticketName : _ticketname,
@@ -45,7 +47,8 @@ export const fetchTicketsOf = async (address)=>{
       expired : _expired,
       canTrade : _canTrade,
       imgSrc : _imgSrc,
-      webUrl : _WebUrl
+      webUrl : _WebUrl,
+      price : _Price
     }
     console.log(_ticketInfo)
     ticketInfos.push(_ticketInfo);
