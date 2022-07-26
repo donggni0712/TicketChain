@@ -34,12 +34,12 @@ contract IKIP17 is IKIP13 {
     event Transfer(
         address indexed from,
         address indexed to,
-        uint256 indexed ticketId
+        uint256 indexed tokenId
     );
     event Approval(
         address indexed owner,
         address indexed approved,
-        uint256 indexed ticketId
+        uint256 indexed tokenId
     );
     event ApprovalForAll(
         address indexed owner,
@@ -53,28 +53,28 @@ contract IKIP17 is IKIP13 {
     function balanceOf(address owner) public view returns (uint256 balance);
 
     /**
-     * @dev Returns the owner of the NFT specified by `ticketId`.
+     * @dev Returns the owner of the NFT specified by `tokenId`.
      */
-    function ownerOf(uint256 ticketId) public view returns (address owner);
+    function ownerOf(uint256 tokenId) public view returns (address owner);
 
     /**
-     * @dev Transfers a specific NFT (`ticketId`) from one account (`from`) to
+     * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
      * another (`to`).
      *
      * Requirements:
      * - `from`, `to` cannot be zero.
-     * - `ticketId` must be owned by `from`.
+     * - `tokenId` must be owned by `from`.
      * - If the caller is not `from`, it must be have been allowed to move this
      * NFT by either `approve` or `setApproveForAll`.
      */
     function safeTransferFrom(
         address from,
         address to,
-        uint256 ticketId
+        uint256 tokenId
     ) public;
 
     /**
-     * @dev Transfers a specific NFT (`ticketId`) from one account (`from`) to
+     * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
      * another (`to`).
      *
      * Requirements:
@@ -84,12 +84,12 @@ contract IKIP17 is IKIP13 {
     function transferFrom(
         address from,
         address to,
-        uint256 ticketId
+        uint256 tokenId
     ) public;
 
-    function approve(address to, uint256 ticketId) public;
+    function approve(address to, uint256 tokenId) public;
 
-    function getApproved(uint256 ticketId)
+    function getApproved(uint256 tokenId)
         public
         view
         returns (address operator);
@@ -104,7 +104,7 @@ contract IKIP17 is IKIP13 {
     function safeTransferFrom(
         address from,
         address to,
-        uint256 ticketId,
+        uint256 tokenId,
         bytes memory data
     ) public;
 }
@@ -129,14 +129,14 @@ contract IERC721Receiver {
      * Note: the ERC721 contract address is always the message sender.
      * @param operator The address which called `safeTransferFrom` function
      * @param from The address which previously owned the ticket
-     * @param ticketId The NFT identifier which is being transferred
+     * @param tokenId The NFT identifier which is being transferred
      * @param data Additional data with no specified format
      * @return bytes4 `bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"))`
      */
     function onERC721Received(
         address operator,
         address from,
-        uint256 ticketId,
+        uint256 tokenId,
         bytes memory data
     ) public returns (bytes4);
 }
@@ -162,14 +162,14 @@ contract IKIP17Receiver {
      * Note: the KIP17 contract address is always the message sender.
      * @param operator The address which called `safeTransferFrom` function
      * @param from The address which previously owned the ticket
-     * @param ticketId The NFT identifier which is being transferred
+     * @param tokenId The NFT identifier which is being transferred
      * @param data Additional data with no specified format
      * @return bytes4 `bytes4(keccak256("onKIP17Received(address,address,uint256,bytes)"))`
      */
     function onKIP17Received(
         address operator,
         address from,
-        uint256 ticketId,
+        uint256 tokenId,
         bytes memory data
     ) public returns (bytes4);
 }
@@ -542,11 +542,11 @@ contract KIP17 is KIP13, IKIP17 {
 
     /**
      * @dev Gets the owner of the specified ticket ID.
-     * @param ticketId uint256 ID of the ticket to query the owner of
+     * @param tokenId uint256 ID of the ticket to query the owner of
      * @return address currently marked as the owner of the given ticket ID
      */
-    function ownerOf(uint256 ticketId) public view returns (address) {
-        address owner = _ticketOwner[ticketId];
+    function ownerOf(uint256 tokenId) public view returns (address) {
+        address owner = _ticketOwner[tokenId];
         require(
             owner != address(0),
             "KIP17: owner query for nonexistent ticket"
@@ -561,10 +561,10 @@ contract KIP17 is KIP13, IKIP17 {
      * There can only be one approved address per ticket at a given time.
      * Can only be called by the ticket owner or an approved operator.
      * @param to address to be approved for the given ticket ID
-     * @param ticketId uint256 ID of the ticket to be approved
+     * @param tokenId uint256 ID of the ticket to be approved
      */
-    function approve(address to, uint256 ticketId) public {
-        address owner = ownerOf(ticketId);
+    function approve(address to, uint256 tokenId) public {
+        address owner = ownerOf(tokenId);
         require(to != owner, "KIP17: approval to current owner");
 
         require(
@@ -572,23 +572,23 @@ contract KIP17 is KIP13, IKIP17 {
             "KIP17: approve caller is not owner nor approved for all"
         );
 
-        _ticketApprovals[ticketId] = to;
-        emit Approval(owner, to, ticketId);
+        _ticketApprovals[tokenId] = to;
+        emit Approval(owner, to, tokenId);
     }
 
     /**
      * @dev Gets the approved address for a ticket ID, or zero if no address set
      * Reverts if the ticket ID does not exist.
-     * @param ticketId uint256 ID of the ticket to query the approval of
+     * @param tokenId uint256 ID of the ticket to query the approval of
      * @return address currently approved for the given ticket ID
      */
-    function getApproved(uint256 ticketId) public view returns (address) {
+    function getApproved(uint256 tokenId) public view returns (address) {
         require(
-            _exists(ticketId),
+            _exists(tokenId),
             "KIP17: approved query for nonexistent ticket"
         );
 
-        return _ticketApprovals[ticketId];
+        return _ticketApprovals[tokenId];
     }
 
     /**
@@ -624,20 +624,20 @@ contract KIP17 is KIP13, IKIP17 {
      * Requires the msg.sender to be the owner, approved, or operator.
      * @param from current owner of the ticket
      * @param to address to receive the ownership of the given ticket ID
-     * @param ticketId uint256 ID of the ticket to be transferred
+     * @param tokenId uint256 ID of the ticket to be transferred
      */
     function transferFrom(
         address from,
         address to,
-        uint256 ticketId
+        uint256 tokenId
     ) public {
         //solhint-disable-next-line max-line-length
         require(
-            _isApprovedOrOwner(msg.sender, ticketId),
+            _isApprovedOrOwner(msg.sender, tokenId),
             "KIP17: transfer caller is not owner nor approved"
         );
 
-        _transferFrom(from, to, ticketId);
+        _transferFrom(from, to, tokenId);
     }
 
     /**
@@ -649,14 +649,14 @@ contract KIP17 is KIP13, IKIP17 {
      * Requires the msg.sender to be the owner, approved, or operator
      * @param from current owner of the ticket
      * @param to address to receive the ownership of the given ticket ID
-     * @param ticketId uint256 ID of the ticket to be transferred
+     * @param tokenId uint256 ID of the ticket to be transferred
      */
     function safeTransferFrom(
         address from,
         address to,
-        uint256 ticketId
+        uint256 tokenId
     ) public {
-        safeTransferFrom(from, to, ticketId, "");
+        safeTransferFrom(from, to, tokenId, "");
     }
 
     /**
@@ -668,51 +668,51 @@ contract KIP17 is KIP13, IKIP17 {
      * Requires the msg.sender to be the owner, approved, or operator
      * @param from current owner of the ticket
      * @param to address to receive the ownership of the given ticket ID
-     * @param ticketId uint256 ID of the ticket to be transferred
+     * @param tokenId uint256 ID of the ticket to be transferred
      * @param _data bytes data to send along with a safe transfer check
      */
     function safeTransferFrom(
         address from,
         address to,
-        uint256 ticketId,
+        uint256 tokenId,
         bytes memory _data
     ) public {
-        transferFrom(from, to, ticketId);
+        transferFrom(from, to, tokenId);
         require(
-            _checkOnKIP17Received(from, to, ticketId, _data),
+            _checkOnKIP17Received(from, to, tokenId, _data),
             "KIP17: transfer to non KIP17Receiver implementer"
         );
     }
 
     /**
      * @dev Returns whether the specified ticket exists.
-     * @param ticketId uint256 ID of the ticket to query the existence of
+     * @param tokenId uint256 ID of the ticket to query the existence of
      * @return bool whether the ticket exists
      */
-    function _exists(uint256 ticketId) internal view returns (bool) {
-        address owner = _ticketOwner[ticketId];
+    function _exists(uint256 tokenId) internal view returns (bool) {
+        address owner = _ticketOwner[tokenId];
         return owner != address(0);
     }
 
     /**
      * @dev Returns whether the given spender can transfer a given ticket ID.
      * @param spender address of the spender to query
-     * @param ticketId uint256 ID of the ticket to be transferred
+     * @param tokenId uint256 ID of the ticket to be transferred
      * @return bool whether the msg.sender is approved for the given ticket ID,
      * is an operator of the owner, or is the owner of the ticket
      */
-    function _isApprovedOrOwner(address spender, uint256 ticketId)
+    function _isApprovedOrOwner(address spender, uint256 tokenId)
         internal
         view
         returns (bool)
     {
         require(
-            _exists(ticketId),
+            _exists(tokenId),
             "KIP17: operator query for nonexistent ticket"
         );
-        address owner = ownerOf(ticketId);
+        address owner = ownerOf(tokenId);
         return (spender == owner ||
-            getApproved(ticketId) == spender ||
+            getApproved(tokenId) == spender ||
             isApprovedForAll(owner, spender));
     }
 
@@ -720,16 +720,16 @@ contract KIP17 is KIP13, IKIP17 {
      * @dev Internal function to mint a new ticket.
      * Reverts if the given ticket ID already exists.
      * @param to The address that will own the minted ticket
-     * @param ticketId uint256 ID of the ticket to be minted
+     * @param tokenId uint256 ID of the ticket to be minted
      */
-    function _mint(address to, uint256 ticketId) internal {
+    function _mint(address to, uint256 tokenId) internal {
         require(to != address(0), "KIP17: mint to the zero address");
-        require(!_exists(ticketId), "KIP17: ticket already minted");
+        require(!_exists(tokenId), "KIP17: ticket already minted");
 
-        _ticketOwner[ticketId] = to;
+        _ticketOwner[tokenId] = to;
         _ownedticketsCount[to].increment();
 
-        emit Transfer(address(0), to, ticketId);
+        emit Transfer(address(0), to, tokenId);
     }
 
     /**
@@ -737,29 +737,29 @@ contract KIP17 is KIP13, IKIP17 {
      * Reverts if the ticket does not exist.
      * Deprecated, use _burn(uint256) instead.
      * @param owner owner of the ticket to burn
-     * @param ticketId uint256 ID of the ticket being burned
+     * @param tokenId uint256 ID of the ticket being burned
      */
-    function _burn(address owner, uint256 ticketId) internal {
+    function _burn(address owner, uint256 tokenId) internal {
         require(
-            ownerOf(ticketId) == owner,
+            ownerOf(tokenId) == owner,
             "KIP17: burn of ticket that is not own"
         );
 
-        _clearApproval(ticketId);
+        _clearApproval(tokenId);
 
         _ownedticketsCount[owner].decrement();
-        _ticketOwner[ticketId] = address(0);
+        _ticketOwner[tokenId] = address(0);
 
-        emit Transfer(owner, address(0), ticketId);
+        emit Transfer(owner, address(0), tokenId);
     }
 
     /**
      * @dev Internal function to burn a specific ticket.
      * Reverts if the ticket does not exist.
-     * @param ticketId uint256 ID of the ticket being burned
+     * @param tokenId uint256 ID of the ticket being burned
      */
-    function _burn(uint256 ticketId) internal {
-        _burn(ownerOf(ticketId), ticketId);
+    function _burn(uint256 tokenId) internal {
+        _burn(ownerOf(tokenId), tokenId);
     }
 
     /**
@@ -767,27 +767,27 @@ contract KIP17 is KIP13, IKIP17 {
      * As opposed to transferFrom, this imposes no restrictions on msg.sender.
      * @param from current owner of the ticket
      * @param to address to receive the ownership of the given ticket ID
-     * @param ticketId uint256 ID of the ticket to be transferred
+     * @param tokenId uint256 ID of the ticket to be transferred
      */
     function _transferFrom(
         address from,
         address to,
-        uint256 ticketId
+        uint256 tokenId
     ) internal {
         require(
-            ownerOf(ticketId) == from,
+            ownerOf(tokenId) == from,
             "KIP17: transfer of ticket that is not own"
         );
         require(to != address(0), "KIP17: transfer to the zero address");
 
-        _clearApproval(ticketId);
+        _clearApproval(tokenId);
 
         _ownedticketsCount[from].decrement();
         _ownedticketsCount[to].increment();
 
-        _ticketOwner[ticketId] = to;
+        _ticketOwner[tokenId] = to;
 
-        emit Transfer(from, to, ticketId);
+        emit Transfer(from, to, tokenId);
     }
 
     /**
@@ -797,14 +797,14 @@ contract KIP17 is KIP13, IKIP17 {
      * This function is deprecated.
      * @param from address representing the previous owner of the given ticket ID
      * @param to target address that will receive the tickets
-     * @param ticketId uint256 ID of the ticket to be transferred
+     * @param tokenId uint256 ID of the ticket to be transferred
      * @param _data bytes optional data to send along with the call
      * @return bool whether the call correctly returned the expected magic value
      */
     function _checkOnKIP17Received(
         address from,
         address to,
-        uint256 ticketId,
+        uint256 tokenId,
         bytes memory _data
     ) internal returns (bool) {
         bool success;
@@ -820,7 +820,7 @@ contract KIP17 is KIP13, IKIP17 {
                 _ERC721_RECEIVED,
                 msg.sender,
                 from,
-                ticketId,
+                tokenId,
                 _data
             )
         );
@@ -836,7 +836,7 @@ contract KIP17 is KIP13, IKIP17 {
                 _KIP17_RECEIVED,
                 msg.sender,
                 from,
-                ticketId,
+                tokenId,
                 _data
             )
         );
@@ -852,11 +852,11 @@ contract KIP17 is KIP13, IKIP17 {
 
     /**
      * @dev Private function to clear current approval of a given ticket ID.
-     * @param ticketId uint256 ID of the ticket to be transferred
+     * @param tokenId uint256 ID of the ticket to be transferred
      */
-    function _clearApproval(uint256 ticketId) private {
-        if (_ticketApprovals[ticketId] != address(0)) {
-            _ticketApprovals[ticketId] = address(0);
+    function _clearApproval(uint256 tokenId) private {
+        if (_ticketApprovals[tokenId] != address(0)) {
+            _ticketApprovals[tokenId] = address(0);
         }
     }
 }
@@ -875,7 +875,7 @@ contract IKIP17Enumerable is IKIP17 {
     function ticketOfOwnerByIndex(address owner, uint256 index)
         public
         view
-        returns (uint256 ticketId);
+        returns (uint256 tokenId);
 
     function ticketByIndex(uint256 index) public view returns (uint256);
 }
@@ -963,32 +963,32 @@ contract KIP17Enumerable is KIP13, KIP17, IKIP17Enumerable {
      * As opposed to transferFrom, this imposes no restrictions on msg.sender.
      * @param from current owner of the ticket
      * @param to address to receive the ownership of the given ticket ID
-     * @param ticketId uint256 ID of the ticket to be transferred
+     * @param tokenId uint256 ID of the ticket to be transferred
      */
     function _transferFrom(
         address from,
         address to,
-        uint256 ticketId
+        uint256 tokenId
     ) internal {
-        super._transferFrom(from, to, ticketId);
+        super._transferFrom(from, to, tokenId);
 
-        _removeticketFromOwnerEnumeration(from, ticketId);
+        _removeticketFromOwnerEnumeration(from, tokenId);
 
-        _addticketToOwnerEnumeration(to, ticketId);
+        _addticketToOwnerEnumeration(to, tokenId);
     }
 
     /**
      * @dev Internal function to mint a new ticket.
      * Reverts if the given ticket ID already exists.
      * @param to address the beneficiary that will own the minted ticket
-     * @param ticketId uint256 ID of the ticket to be minted
+     * @param tokenId uint256 ID of the ticket to be minted
      */
-    function _mint(address to, uint256 ticketId) internal {
-        super._mint(to, ticketId);
+    function _mint(address to, uint256 tokenId) internal {
+        super._mint(to, tokenId);
 
-        _addticketToOwnerEnumeration(to, ticketId);
+        _addticketToOwnerEnumeration(to, tokenId);
 
-        _addticketToAllticketsEnumeration(ticketId);
+        _addticketToAllticketsEnumeration(tokenId);
     }
 
     /**
@@ -996,16 +996,16 @@ contract KIP17Enumerable is KIP13, KIP17, IKIP17Enumerable {
      * Reverts if the ticket does not exist.
      * Deprecated, use _burn(uint256) instead.
      * @param owner owner of the ticket to burn
-     * @param ticketId uint256 ID of the ticket being burned
+     * @param tokenId uint256 ID of the ticket being burned
      */
-    function _burn(address owner, uint256 ticketId) internal {
-        super._burn(owner, ticketId);
+    function _burn(address owner, uint256 tokenId) internal {
+        super._burn(owner, tokenId);
 
-        _removeticketFromOwnerEnumeration(owner, ticketId);
-        // Since ticketId will be deleted, we can clear its slot in _ownedticketsIndex to trigger a gas refund
-        _ownedticketsIndex[ticketId] = 0;
+        _removeticketFromOwnerEnumeration(owner, tokenId);
+        // Since tokenId will be deleted, we can clear its slot in _ownedticketsIndex to trigger a gas refund
+        _ownedticketsIndex[tokenId] = 0;
 
-        _removeticketFromAllticketsEnumeration(ticketId);
+        _removeticketFromAllticketsEnumeration(tokenId);
     }
 
     /**
@@ -1024,22 +1024,20 @@ contract KIP17Enumerable is KIP13, KIP17, IKIP17Enumerable {
     /**
      * @dev Private function to add a ticket to this extension's ownership-tracking data structures.
      * @param to address representing the new owner of the given ticket ID
-     * @param ticketId uint256 ID of the ticket to be added to the tickets list of the given address
+     * @param tokenId uint256 ID of the ticket to be added to the tickets list of the given address
      */
-    function _addticketToOwnerEnumeration(address to, uint256 ticketId)
-        private
-    {
-        _ownedticketsIndex[ticketId] = _ownedtickets[to].length;
-        _ownedtickets[to].push(ticketId);
+    function _addticketToOwnerEnumeration(address to, uint256 tokenId) private {
+        _ownedticketsIndex[tokenId] = _ownedtickets[to].length;
+        _ownedtickets[to].push(tokenId);
     }
 
     /**
      * @dev Private function to add a ticket to this extension's ticket tracking data structures.
-     * @param ticketId uint256 ID of the ticket to be added to the tickets list
+     * @param tokenId uint256 ID of the ticket to be added to the tickets list
      */
-    function _addticketToAllticketsEnumeration(uint256 ticketId) private {
-        _allticketsIndex[ticketId] = _alltickets.length;
-        _alltickets.push(ticketId);
+    function _addticketToAllticketsEnumeration(uint256 tokenId) private {
+        _allticketsIndex[tokenId] = _alltickets.length;
+        _alltickets.push(tokenId);
     }
 
     /**
@@ -1048,55 +1046,55 @@ contract KIP17Enumerable is KIP13, KIP17, IKIP17Enumerable {
      * gas optimizations e.g. when performing a transfer operation (avoiding double writes).
      * This has O(1) time complexity, but alters the order of the _ownedtickets array.
      * @param from address representing the previous owner of the given ticket ID
-     * @param ticketId uint256 ID of the ticket to be removed from the tickets list of the given address
+     * @param tokenId uint256 ID of the ticket to be removed from the tickets list of the given address
      */
-    function _removeticketFromOwnerEnumeration(address from, uint256 ticketId)
+    function _removeticketFromOwnerEnumeration(address from, uint256 tokenId)
         private
     {
         // To prevent a gap in from's tickets array, we store the last ticket in the index of the ticket to delete, and
         // then delete the last slot (swap and pop).
 
         uint256 lastticketIndex = _ownedtickets[from].length.sub(1);
-        uint256 ticketIndex = _ownedticketsIndex[ticketId];
+        uint256 ticketIndex = _ownedticketsIndex[tokenId];
 
         // When the ticket to delete is the last ticket, the swap operation is unnecessary
         if (ticketIndex != lastticketIndex) {
-            uint256 lastticketId = _ownedtickets[from][lastticketIndex];
+            uint256 lasttokenId = _ownedtickets[from][lastticketIndex];
 
-            _ownedtickets[from][ticketIndex] = lastticketId; // Move the last ticket to the slot of the to-delete ticket
-            _ownedticketsIndex[lastticketId] = ticketIndex; // Update the moved ticket's index
+            _ownedtickets[from][ticketIndex] = lasttokenId; // Move the last ticket to the slot of the to-delete ticket
+            _ownedticketsIndex[lasttokenId] = ticketIndex; // Update the moved ticket's index
         }
 
         // This also deletes the contents at the last position of the array
         _ownedtickets[from].length--;
 
-        // Note that _ownedticketsIndex[ticketId] hasn't been cleared: it still points to the old slot (now occupied by
-        // lastticketId, or just over the end of the array if the ticket was the last one).
+        // Note that _ownedticketsIndex[tokenId] hasn't been cleared: it still points to the old slot (now occupied by
+        // lasttokenId, or just over the end of the array if the ticket was the last one).
     }
 
     /**
      * @dev Private function to remove a ticket from this extension's ticket tracking data structures.
      * This has O(1) time complexity, but alters the order of the _alltickets array.
-     * @param ticketId uint256 ID of the ticket to be removed from the tickets list
+     * @param tokenId uint256 ID of the ticket to be removed from the tickets list
      */
-    function _removeticketFromAllticketsEnumeration(uint256 ticketId) private {
+    function _removeticketFromAllticketsEnumeration(uint256 tokenId) private {
         // To prevent a gap in the tickets array, we store the last ticket in the index of the ticket to delete, and
         // then delete the last slot (swap and pop).
 
         uint256 lastticketIndex = _alltickets.length.sub(1);
-        uint256 ticketIndex = _allticketsIndex[ticketId];
+        uint256 ticketIndex = _allticketsIndex[tokenId];
 
         // When the ticket to delete is the last ticket, the swap operation is unnecessary. However, since this occurs so
         // rarely (when the last minted ticket is burnt) that we still do the swap here to avoid the gas cost of adding
         // an 'if' statement (like in _removeticketFromOwnerEnumeration)
-        uint256 lastticketId = _alltickets[lastticketIndex];
+        uint256 lasttokenId = _alltickets[lastticketIndex];
 
-        _alltickets[ticketIndex] = lastticketId; // Move the last ticket to the slot of the to-delete ticket
-        _allticketsIndex[lastticketId] = ticketIndex; // Update the moved ticket's index
+        _alltickets[ticketIndex] = lasttokenId; // Move the last ticket to the slot of the to-delete ticket
+        _allticketsIndex[lasttokenId] = ticketIndex; // Update the moved ticket's index
 
         // This also deletes the contents at the last position of the array
         _alltickets.length--;
-        _allticketsIndex[ticketId] = 0;
+        _allticketsIndex[tokenId] = 0;
     }
 }
 
@@ -1113,28 +1111,9 @@ contract IKIP17Metadata is IKIP17 {
 
     function symbol() external view returns (string memory);
 
-    function ticketName(uint256 ticketId) external view returns (string memory);
+    function ticketId(uint256 tokenId) external view returns (uint256);
 
-    function ticketExpired(uint256 ticketId) external view returns (uint256);
-
-    function ticketPlaceName(uint256 ticketId)
-        external
-        view
-        returns (string memory);
-
-    function ticketCanTrade(uint256 ticketId) external view returns (bool);
-
-    function ticketImgsrc(uint256 ticketId)
-        external
-        view
-        returns (string memory);
-
-    function ticketWeburl(uint256 ticketId)
-        external
-        view
-        returns (string memory);
-
-    function ticketPrice(uint256 ticketId) external view returns (uint256);
+    function ticketPrice(uint256 tokenId) external view returns (uint256);
 }
 
 // File: contracts/ticket/KIP17/KIP17Metadata.sol
@@ -1149,12 +1128,8 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
     string private _symbol;
 
     // Optional mapping for ticket URIs
-    mapping(uint256 => string) private _ticketName;
-    mapping(uint256 => uint256) private _ticketExpired;
-    mapping(uint256 => string) private _ticketPlaceName;
-    mapping(uint256 => bool) private _ticketCanTrade;
-    mapping(uint256 => string) private _ticketImgsrc;
-    mapping(uint256 => string) private _ticketWeburl;
+    mapping(uint256 => string) private _ticket;
+    mapping(uint256 => uint256) private _ticketId;
     mapping(uint256 => uint256) private _ticketPrice;
 
     /*
@@ -1196,153 +1171,57 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
     /**
      * @dev Returns an URI for a given ticket ID.
      * Throws if the ticket ID does not exist. May return an empty string.
-     * @param ticketId uint256 ID of the ticket to query
+     * @param tokenId uint256 ID of the ticket to query
      */
-    function ticketName(uint256 ticketId)
-        external
-        view
-        returns (string memory)
-    {
+    function ticketId(uint256 tokenId) external view returns (uint256) {
         require(
-            _exists(ticketId),
+            _exists(tokenId),
             "KIP17Metadata: ticketName query for nonexistent ticket"
         );
-        return _ticketName[ticketId];
+        return _ticketId[tokenId];
     }
 
-    function ticketExpired(uint256 ticketId) external view returns (uint256) {
+    function ticketPrice(uint256 tokenId) external view returns (uint256) {
         require(
-            _exists(ticketId),
-            "KIP17Metadata: ticketExpired query for nonexistent ticket"
-        );
-        return _ticketExpired[ticketId];
-    }
-
-    function ticketPlaceName(uint256 ticketId)
-        external
-        view
-        returns (string memory)
-    {
-        require(
-            _exists(ticketId),
-            "KIP17Metadata: ticketPlaceName query for nonexistent ticket"
-        );
-        return _ticketPlaceName[ticketId];
-    }
-
-    function ticketCanTrade(uint256 ticketId) external view returns (bool) {
-        require(
-            _exists(ticketId),
-            "KIP17Metadata: ticketCanTrade query for nonexistent ticket"
-        );
-        return _ticketCanTrade[ticketId];
-    }
-
-    function ticketImgsrc(uint256 ticketId)
-        external
-        view
-        returns (string memory)
-    {
-        require(
-            _exists(ticketId),
-            "KIP17Metadata: ticketImgsrc query for nonexistent ticket"
-        );
-        return _ticketImgsrc[ticketId];
-    }
-
-    function ticketWeburl(uint256 ticketId)
-        external
-        view
-        returns (string memory)
-    {
-        require(
-            _exists(ticketId),
+            _exists(tokenId),
             "KIP17Metadata: ticketWeburl query for nonexistent ticket"
         );
-        return _ticketWeburl[ticketId];
-    }
-
-    function ticketPrice(uint256 ticketId) external view returns (uint256) {
-        require(
-            _exists(ticketId),
-            "KIP17Metadata: ticketWeburl query for nonexistent ticket"
-        );
-        return _ticketPrice[ticketId];
+        return _ticketPrice[tokenId];
     }
 
     /**
      * @dev Internal function to set the ticket URI for a given ticket.
      * Reverts if the ticket ID does not exist.
-     * @param ticketId uint256 ID of the ticket to set its URI
+     * @param tokenId uint256 ID of the ticket to set its URI
      * @param uri string URI to assign
      */
-    function _setTicketName(uint256 ticketId, string memory uri) internal {
+    function _setTicketId(uint256 tokenId, uint256 uri) internal {
         require(
-            _exists(ticketId),
+            _exists(tokenId),
             "KIP17Metadata: Name set of nonexistent ticket"
         );
-        _ticketName[ticketId] = uri;
+        _ticketId[tokenId] = uri;
     }
 
-    function _setTicketExpired(uint256 ticketId, uint256 uri) internal {
+    function _setTicketPrice(uint256 tokenId, uint256 uri) internal {
         require(
-            _exists(ticketId),
-            "KIP17Metadata: Expired set of nonexistent ticket"
-        );
-        _ticketExpired[ticketId] = uri;
-    }
-
-    function _setTicketPlaceName(uint256 ticketId, string memory uri) internal {
-        require(
-            _exists(ticketId),
+            _exists(tokenId),
             "KIP17Metadata: Name set of nonexistent ticket"
         );
-        _ticketPlaceName[ticketId] = uri;
+        _ticketPrice[tokenId] = uri;
     }
 
-    function _setTicketCanTrade(uint256 ticketId, bool uri) internal {
+    function SetTicketPrice(uint256 tokenId, uint256 uri) public {
         require(
-            _exists(ticketId),
-            "KIP17Metadata: URI set of nonexistent ticket"
-        );
-        _ticketCanTrade[ticketId] = uri;
-    }
-
-    function _setTicketImgsrc(uint256 ticketId, string memory uri) internal {
-        require(
-            _exists(ticketId),
-            "KIP17Metadata: URI set of nonexistent ticket"
-        );
-        _ticketImgsrc[ticketId] = uri;
-    }
-
-    function _setTicketWeburl(uint256 ticketId, string memory uri) internal {
-        require(
-            _exists(ticketId),
-            "KIP17Metadata: URI set of nonexistent ticket"
-        );
-        _ticketWeburl[ticketId] = uri;
-    }
-
-    function _setTicketPrice(uint256 ticketId, uint256 uri) internal {
-        require(
-            _exists(ticketId),
-            "KIP17Metadata: Name set of nonexistent ticket"
-        );
-        _ticketPrice[ticketId] = uri;
-    }
-
-    function SetTicketPrice(uint256 ticketId, uint256 uri) public {
-        require(
-            _exists(ticketId),
+            _exists(tokenId),
             "KIP17Metadata: Name set of nonexistent ticket"
         );
         require(
-            _isApprovedOrOwner(msg.sender, ticketId),
+            _isApprovedOrOwner(msg.sender, tokenId),
             "KIP17: transfer caller is not owner nor approved"
         );
 
-        _ticketPrice[ticketId] = uri;
+        _ticketPrice[tokenId] = uri;
     }
 
     /**
@@ -1350,35 +1229,17 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
      * Reverts if the ticket does not exist.
      * Deprecated, use _burn(uint256) instead.
      * @param owner owner of the ticket to burn
-     * @param ticketId uint256 ID of the ticket being burned by the msg.sender
+     * @param tokenId uint256 ID of the ticket being burned by the msg.sender
      */
-    function _burn(address owner, uint256 ticketId) internal {
-        super._burn(owner, ticketId);
+    function _burn(address owner, uint256 tokenId) internal {
+        super._burn(owner, tokenId);
 
         // Clear metadata (if any)
-        if (bytes(_ticketName[ticketId]).length != 0) {
-            delete _ticketName[ticketId];
+        if (_ticketId[tokenId] != 0) {
+            delete _ticketId[tokenId];
         }
-        if (bytes(_ticketPlaceName[ticketId]).length != 0) {
-            delete _ticketPlaceName[ticketId];
-        }
-        if (bytes(_ticketImgsrc[ticketId]).length != 0) {
-            delete _ticketImgsrc[ticketId];
-        }
-        if (bytes(_ticketWeburl[ticketId]).length != 0) {
-            delete _ticketWeburl[ticketId];
-        }
-        if (_ticketExpired[ticketId] != 0) {
-            delete _ticketExpired[ticketId];
-        }
-        if (
-            _ticketCanTrade[ticketId] != true &&
-            _ticketCanTrade[ticketId] != false
-        ) {
-            delete _ticketCanTrade[ticketId];
-        }
-        if (_ticketPrice[ticketId] != 0) {
-            delete _ticketPrice[ticketId];
+        if (_ticketPrice[tokenId] != 0) {
+            delete _ticketPrice[tokenId];
         }
     }
 }
@@ -1522,93 +1383,46 @@ contract KIP17MetadataMintable is KIP13, KIP17, KIP17Metadata, MinterRole {
     /**
      * @dev Function to mint tickets.
      * @param to The address that will receive the minted tickets.
-     * @param ticketName The ticket Name of the minted ticket.
-     * @param ticketExpired The tticket Expired of the minted ticket.
-     * @param ticketPlaceName The ticket PlaceName of the minted ticket.
-     * @param ticketCanTrade The ticket CanTrade of the minted ticket.
-     * @param ticketImgsrc The ticket Imgsrc of the minted ticket.
-     * @param ticketWeburl The ticket Weburl of the minted ticket.
      * @return A boolean that indicates if the operation was successful.
      */
     function mintWithATicketData(
         address to,
-        string memory ticketName,
-        uint256 ticketExpired,
-        string memory ticketPlaceName,
-        bool ticketCanTrade,
-        string memory ticketImgsrc,
-        string memory ticketWeburl,
+        uint256 ticketId,
         uint256 ticketPrice
     ) public returns (bool) {
-        uint256 ticketId = now;
-        _mint(to, ticketId);
-        _setTicketName(ticketId, ticketName);
-        _setTicketExpired(ticketId, ticketExpired);
-        _setTicketPlaceName(ticketId, ticketPlaceName);
-        _setTicketCanTrade(ticketId, ticketCanTrade);
-        _setTicketImgsrc(ticketId, ticketImgsrc);
-        _setTicketWeburl(ticketId, ticketWeburl);
-        _setTicketPrice(ticketId, ticketPrice);
+        uint256 tokenId = now;
+        _mint(to, tokenId);
+        _setTicketId(tokenId, ticketId);
+        _setTicketPrice(tokenId, ticketPrice);
         return true;
     }
 
     /**
      * @dev Function to mint tickets.
      * @param to The address that will receive the minted tickets.
-     * @param ticketName The ticket Name of the minted ticket.
-     * @param ticketExpired The tticket Expired of the minted ticket.
-     * @param ticketPlaceName The ticket PlaceName of the minted ticket.
-     * @param ticketCanTrade The ticket CanTrade of the minted ticket.
-     * @param ticketImgsrc The ticket Imgsrc of the minted ticket.
-     * @param ticketWeburl The ticket Weburl of the minted ticket.
      * @return A boolean that indicates if the operation was successful.
      */
     function mintWithTicketData(
         address to,
+        uint256 tokenId,
         uint256 ticketId,
-        string memory ticketName,
-        uint256 ticketExpired,
-        string memory ticketPlaceName,
-        bool ticketCanTrade,
-        string memory ticketImgsrc,
-        string memory ticketWeburl,
         uint256 ticketPrice
     ) public returns (bool) {
-        _mint(to, ticketId);
-        _setTicketName(ticketId, ticketName);
-        _setTicketExpired(ticketId, ticketExpired);
-        _setTicketPlaceName(ticketId, ticketPlaceName);
-        _setTicketCanTrade(ticketId, ticketCanTrade);
-        _setTicketImgsrc(ticketId, ticketImgsrc);
-        _setTicketWeburl(ticketId, ticketWeburl);
-        _setTicketPrice(ticketId, ticketPrice);
+        _mint(to, tokenId);
+        _setTicketId(tokenId, ticketId);
+        _setTicketPrice(tokenId, ticketPrice);
         return true;
     }
 
     function mintWithTicketDatas(
         address to,
-        string memory ticketName,
-        uint256 ticketExpired,
-        string memory ticketPlaceName,
-        bool ticketCanTrade,
-        string memory ticketImgsrc,
-        string memory ticketWeburl,
+        uint256 ticketId,
         uint256 ticketPrice,
         uint256 num
     ) public returns (bool) {
-        uint256 ticketId = now;
+        uint256 tokenId = now;
         for (uint256 i = 0; i < num; i++) {
-            mintWithTicketData(
-                to,
-                ticketId + i,
-                ticketName,
-                ticketExpired,
-                ticketPlaceName,
-                ticketCanTrade,
-                ticketImgsrc,
-                ticketWeburl,
-                ticketPrice
-            );
+            mintWithTicketData(to, tokenId + i, ticketId, ticketPrice);
         }
         return true;
     }
@@ -1644,11 +1458,11 @@ contract KIP17Mintable is KIP17, MinterRole {
     /**
      * @dev Function to mint tickets.
      * @param to The address that will receive the minted tickets.
-     * @param ticketId The ticket id to mint.
+     * @param tokenId The ticket id to mint.
      * @return A boolean that indicates if the operation was successful.
      */
-    function mint(address to, uint256 ticketId) public returns (bool) {
-        _mint(to, ticketId);
+    function mint(address to, uint256 tokenId) public returns (bool) {
+        _mint(to, tokenId);
         return true;
     }
 }
@@ -1680,15 +1494,15 @@ contract KIP17Burnable is KIP13, KIP17 {
 
     /**
      * @dev Burns a specific KIP17 ticket.
-     * @param ticketId uint256 id of the KIP17 ticket to be burned.
+     * @param tokenId uint256 id of the KIP17 ticket to be burned.
      */
-    function burn(uint256 ticketId) public {
+    function burn(uint256 tokenId) public {
         //solhint-disable-next-line max-line-length
         require(
-            _isApprovedOrOwner(msg.sender, ticketId),
+            _isApprovedOrOwner(msg.sender, tokenId),
             "KIP17Burnable: caller is not owner nor approved"
         );
-        _burn(ticketId);
+        _burn(tokenId);
     }
 }
 
@@ -1842,8 +1656,8 @@ contract KIP17Pausable is KIP13, KIP17, Pausable {
         _registerInterface(_INTERFACE_ID_KIP17_PAUSABLE);
     }
 
-    function approve(address to, uint256 ticketId) public whenNotPaused {
-        super.approve(to, ticketId);
+    function approve(address to, uint256 tokenId) public whenNotPaused {
+        super.approve(to, tokenId);
     }
 
     function setApprovalForAll(address to, bool approved) public whenNotPaused {
@@ -1853,9 +1667,9 @@ contract KIP17Pausable is KIP13, KIP17, Pausable {
     function transferFrom(
         address from,
         address to,
-        uint256 ticketId
+        uint256 tokenId
     ) public whenNotPaused {
-        super.transferFrom(from, to, ticketId);
+        super.transferFrom(from, to, tokenId);
     }
 }
 
@@ -1967,9 +1781,9 @@ contract KIP17TicketChain is
 
     /**
      * @dev Burns a specific KIP17 ticket.
-     * @param ticketId uint256 id of the KIP17 ticket to be burned.
+     * @param tokenId uint256 id of the KIP17 ticket to be burned.
      */
-    function burn(uint256 ticketId) public onlyOwner {
-        _burn(ticketId);
+    function burn(uint256 tokenId) public onlyOwner {
+        _burn(tokenId);
     }
 }
