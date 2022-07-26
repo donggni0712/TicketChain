@@ -20,13 +20,13 @@ type MyEvent struct {
 }
 
 type Ticket struct {
-	Id       int64  `json:"id"`
-	Name     string `json:"name"`
-	Place    string `json:"place"`
-	CanTrade bool   `json:"canTrade"`
-	Expired  string `json:"expired"`
-	ImgSrc   string `json:"imgSrc"`
-	WebUrl   string `json:"webUrl"`
+	Id         int    `json:"id"`
+	TicketName string `json:"ticketName"`
+	Place      string `json:"place"`
+	CanTrade   bool   `json:"canTrade"`
+	Expired    string `json:"expired"`
+	ImgSrc     string `json:"imgSrc"`
+	WebUrl     string `json:"webUrl"`
 }
 
 func HandleRequest(ctx context.Context, myInput MyEvent) (Ticket, error) {

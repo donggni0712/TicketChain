@@ -13,23 +13,23 @@ import (
 )
 
 type MyEvent struct {
-	Id       int64  `json:"id"`
-	Name     string `json:"name"`
-	Place    string `json:"place"`
-	CanTrade bool   `json:"canTrade"`
-	Expired  string `json:"expired"`
-	ImgSrc   string `json:"imgSrc"`
-	WebUrl   string `json:"webUrl"`
+	Id         int64  `json:"id"`
+	TicketName string `json:"ticketName"`
+	Place      string `json:"place"`
+	CanTrade   bool   `json:"canTrade"`
+	Expired    string `json:"expired"`
+	ImgSrc     string `json:"imgSrc"`
+	WebUrl     string `json:"webUrl"`
 }
 
 type Ticket struct {
-	Id       int64  `json:"id"`
-	Name     string `json:"name"`
-	Place    string `json:"place"`
-	CanTrade bool   `json:"canTrade"`
-	Expired  string `json:"expired"`
-	ImgSrc   string `json:"imgSrc"`
-	WebUrl   string `json:"webUrl"`
+	Id         int64  `json:"id"`
+	TicketName string `json:"ticketName"`
+	Place      string `json:"place"`
+	CanTrade   bool   `json:"canTrade"`
+	Expired    string `json:"expired"`
+	ImgSrc     string `json:"imgSrc"`
+	WebUrl     string `json:"webUrl"`
 }
 
 func HandleRequest(ctx context.Context, myInput MyEvent) (string, error) {
@@ -41,13 +41,13 @@ func HandleRequest(ctx context.Context, myInput MyEvent) (string, error) {
 	svc := dynamodb.New(sess)
 
 	ticket := Ticket{
-		Id:       myInput.Id,
-		Name:     myInput.Name,
-		Place:    myInput.Place,
-		CanTrade: myInput.CanTrade,
-		Expired:  myInput.Expired,
-		ImgSrc:   myInput.ImgSrc,
-		WebUrl:   myInput.WebUrl,
+		Id:         myInput.Id,
+		TicketName: myInput.TicketName,
+		Place:      myInput.Place,
+		CanTrade:   myInput.CanTrade,
+		Expired:    myInput.Expired,
+		ImgSrc:     myInput.ImgSrc,
+		WebUrl:     myInput.WebUrl,
 	}
 
 	av, err := dynamodbattribute.MarshalMap(ticket)
@@ -68,7 +68,7 @@ func HandleRequest(ctx context.Context, myInput MyEvent) (string, error) {
 		log.Fatalf("Got error calling PutItem: %s", err)
 	}
 
-	return fmt.Sprintln("Successfully added '" + ticket.Name + " to table " + tableName), nil
+	return fmt.Sprintln("Successfully added '" + ticket.TicketName + " to table " + tableName), nil
 }
 
 func main() {
