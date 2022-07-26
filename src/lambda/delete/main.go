@@ -14,9 +14,7 @@ import (
 )
 
 type MyEvent struct {
-	Id        int    `json:"id"`
-	Subject   string `json:"subject"`
-	Image_url string `json:"image_url"`
+	Id int `json:"id"`
 }
 
 func HandleRequest(ctx context.Context, myInput MyEvent) {
@@ -30,7 +28,7 @@ func HandleRequest(ctx context.Context, myInput MyEvent) {
 	// Create DynamoDB client
 	svc := dynamodb.New(sess)
 	id := myInput.Id
-	tableName := "Gallery"
+	tableName := "TicketDB"
 
 	input := &dynamodb.DeleteItemInput{
 		Key: map[string]*dynamodb.AttributeValue{
