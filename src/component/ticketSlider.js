@@ -16,7 +16,7 @@ function TicketSilder({tickets, clickTicket}){
     {tickets.map((ticket,index)=>{    
                   return <div>
                   <Card className='ticket'  onClick={()=>{
-                      clickTicket(tickets[index].info.id)
+                      clickTicket(tickets[index])
                     }}>
                      <Card.Img src={tickets[index].info.imgSrc}/>
                     {tickets[index].info.ticketName}<br/>

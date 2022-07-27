@@ -10,7 +10,7 @@ function Tickets({tickets, clickTicket}){
               return <Row key = {`row:${rowIndex}`}>
                 <Col className="ticket_col">
                   <Card className='ticket' onClick={()=>{
-                      clickTicket(tickets[rowIndex*2].info.id)
+                      clickTicket(tickets[rowIndex*2])
                     }}>
                      <Card.Img className='imgSrc' src={tickets[rowIndex*2].info.imgSrc}/>
                     <span className='ticketName'>{tickets[rowIndex*2].info.ticketName}</span>
@@ -25,7 +25,7 @@ function Tickets({tickets, clickTicket}){
                   {
                     tickets.length > rowIndex*2+1 ? (
                     <Card className='ticket' onClick={()=>{
-                      clickTicket(tickets[rowIndex*2+1].info.id)
+                      clickTicket(tickets[rowIndex*2+1])
                     }}>
                      <Card.Img className='imgSrc' src={tickets[rowIndex*2+1].info.imgSrc}/>
                     <span className='ticketName'>{tickets[rowIndex*2+1].info.ticketName}</span>

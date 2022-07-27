@@ -17,10 +17,10 @@ function MyTickets({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalDat
 
   const [tickets, setTickets] = useState([]);
 
-  const clickTicket =(id) =>{
+  const clickTicket =(ticket) =>{
     var crypto = require('crypto');
     var shasum = crypto.createHash('sha512');
-    shasum.update('id');
+    shasum.update(ticket.info.id);
     var output = shasum.digest('hex');
      setQrvalue(output)
   }

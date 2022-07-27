@@ -43,6 +43,15 @@ function Store({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData, s
     setShowModal(true)
   }
 
+  const CanNotSell = () =>{
+     setModalData({
+      title:"해당 티켓을 판매할 수 없습니다.",
+      content:"해당 티켓은 판매할 수 없습니다.",
+      onConfirm: ()=>{}
+    })
+    setShowModal(true)
+  }
+
   const cancelSelling = (id) =>{
      setModalData({
       title:"티켓 판매 취소",
@@ -73,11 +82,16 @@ function Store({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData, s
     setTickets(_tickets);
   }
 
-  const clickTicket = (id) =>{
+  const clickTicket = (ticket) =>{
+    let id = ticket.info.id
     if(tab=="STORE"){
       buyTicket(id)
     }
     if(tab=="MYTICKETS"){
+      if(ticket.info.canTrade==false){
+        CanNotSell();
+        return;
+      }
       sellTicket(id)
     }
     if(tab=="MYSTORE"){

@@ -13,12 +13,26 @@ import QrComponent from '../component/qrcode';
 
 const isMobile = window.screen.width >= 1280 ? false : true;
 
-function Transfer({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData}) {
+function Transfer({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData,setModalData}) {
   const [component, setComponent] = useState("Tickets");
   const [tickets, setTickets] = useState([]);
   const [selectedTicket, setSelectedTicket] = useState({});
 
-  const clickTicket =(id) =>{
+  const CanNotSell = () =>{
+     setModalData({
+      title:"해당 티켓을 판매할 수 없습니다.",
+      content:"해당 티켓은 판매할 수 없습니다.",
+      onConfirm: ()=>{}
+    })
+    setShowModal(true)
+  }
+  
+  const clickTicket =(ticket) =>{
+    if(ticket.info.canTrade==false){
+        CanNotSell();
+        return;
+      }
+    let id = ticket.info.id
     console.log('start')
     console.log(id)
     console.log(tickets)
