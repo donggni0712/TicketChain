@@ -18,7 +18,7 @@ function Tickets({tickets, clickTicket}){
                     <span className='expired'>{tickets[rowIndex*2].info.expired}</span>
                     <a href={tickets[rowIndex*2].info.webUrl} target={'blank'} className='webUrl'>{tickets[rowIndex*2].info.webUrl}</a>
                     <span className='canTrade'>{tickets[rowIndex*2].info.canTrade == true ? <>교환 가능</>: <>교환 불가능</>}</span>
-                     <span className='expired'>Price : {tickets[rowIndex*2].info.price}Klay</span>
+                     <span className='expired'>Price : {tickets[rowIndex*2].price}Klay</span>
                   </Card>
                 </Col>
                 <Col className='ticket_col'>
@@ -33,7 +33,7 @@ function Tickets({tickets, clickTicket}){
                     <span className='expired'>{tickets[rowIndex*2+1].info.expired}</span>
                     <a href={tickets[rowIndex*2].info.webUrl}  target={'blank'}  className='webUrl'>{tickets[rowIndex*2+1].info.webUrl}</a>
                     <span className='canTrade'>{tickets[rowIndex*2+1].info.canTrade == true ? <>교환 가능</>: <>교환 불가능</>}</span>
-                    <span className='expired'>Price : {tickets[rowIndex*2+1].info.price}Klay</span>
+                    <span className='expired'>Price : {tickets[rowIndex*2+1].price}Klay</span>
                  </Card>) : null
                   }
                 </Col>

@@ -2,6 +2,7 @@ import Caver from 'caver-js';
 import TICKETCHAINABI from '../abi/TicketChainABI.json';
 import TICKETMARKETABI from '../abi/TicketMarketABI.json'
 import { ACCESS_KEY_ID, SECRET_ACCESS_KEY, MAINNET_CHAIN_ID,TICKETCHAIN_CONTRACT_ADDRESS, TICKET_MARKET_CONTRACT_ADDRESS } from '../env.js';
+import {getTicketInfo} from './UseTicketDB.js'
 
 const option = {
   headers: [
@@ -32,34 +33,21 @@ export const fetchTicketsOf = async (address)=>{
   const ticketInfos = [];
   for(let i=0;i<_balance;i++){
     const _id = tokenIds[i];
-    const _ticketname = await  TICKETCHAINContract.methods.ticketName(tokenIds[i]).call();
-    const _expired = await TICKETCHAINContract.methods.ticketExpired(tokenIds[i]).call();
-    const _placeName = await TICKETCHAINContract.methods.ticketPlaceName(tokenIds[i]).call();
-    const _canTrade = await TICKETCHAINContract.methods.ticketCanTrade(tokenIds[i]).call();
-    const _imgSrc = await TICKETCHAINContract.methods.ticketImgsrc(tokenIds[i]).call();
-    const _WebUrl = await TICKETCHAINContract.methods.ticketWeburl(tokenIds[i]).call();
+    const _ticketId = await  TICKETCHAINContract.methods.ticketId(tokenIds[i]).call();
     var _Price = await TICKETCHAINContract.methods.ticketPrice(tokenIds[i]).call();
     _Price = _Price/1000000000000000000;
-    const _ticketInfo = {
-      id : _id,
-      ticketName : _ticketname,
-      placeName : _placeName,
-      expired : _expired,
-      canTrade : _canTrade,
-      imgSrc : _imgSrc,
-      webUrl : _WebUrl,
-      price : _Price
-    }
+    console.log(_ticketId)
+    const _ticketInfo = await getTicketInfo(_ticketId)
     console.log(_ticketInfo)
     ticketInfos.push(_ticketInfo);
   }
 
-  const nfts = [];
+  const tickets = [];
   for(let i=0;i<_balance;i++){
-    nfts.push({info: ticketInfos[i], id:tokenIds[i]})
+    tickets.push({info: ticketInfos[i], id:tokenIds[i], price:_Price})
   }
 
-  return nfts;
+  return tickets;
 }
 
 export const fetchTicketsBySellerOf = async (address)=>{
@@ -75,34 +63,25 @@ export const fetchTicketsBySellerOf = async (address)=>{
     tokenIds.push(id);
   }
   // Fetch Token Names
-  const ticketInfos = [];
+   const ticketInfos = [];
   for(let i=0;i<_balance;i++){
     const _id = tokenIds[i];
-    const _ticketname = await  TICKETCHAINContract.methods.ticketName(tokenIds[i]).call();
-    const _expired = await TICKETCHAINContract.methods.ticketExpired(tokenIds[i]).call();
-    const _placeName = await TICKETCHAINContract.methods.ticketPlaceName(tokenIds[i]).call();
-    const _canTrade = await TICKETCHAINContract.methods.ticketCanTrade(tokenIds[i]).call();
-    const _imgSrc = await TICKETCHAINContract.methods.ticketImgsrc(tokenIds[i]).call();
-    const _WebUrl = await TICKETCHAINContract.methods.ticketWeburl(tokenIds[i]).call();
-    const _ticketInfo = {
-      id : _id,
-      ticketName : _ticketname,
-      placeName : _placeName,
-      expired : _expired,
-      canTrade : _canTrade,
-      imgSrc : _imgSrc,
-      webUrl : _WebUrl
-    }
+    const _ticketId = await  TICKETCHAINContract.methods.ticketId(tokenIds[i]).call();
+    var _Price = await TICKETCHAINContract.methods.ticketPrice(tokenIds[i]).call();
+    _Price = _Price/1000000000000000000;
+    console.log(_ticketId)
+    const _ticketInfo = await getTicketInfo(_ticketId)
     console.log(_ticketInfo)
     ticketInfos.push(_ticketInfo);
   }
 
-  const nfts = [];
+  const tickets = [];
   for(let i=0;i<_balance;i++){
-    nfts.push({info: ticketInfos[i], id:tokenIds[i]})
+    tickets.push({info: ticketInfos[i], id:tokenIds[i], price:_Price})
   }
 
-  return nfts;
+
+  return tickets;
 }
 
 export const getPrice = async (ticketId) => {
