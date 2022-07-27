@@ -20,11 +20,11 @@ function TicketSilder({tickets, clickTicket}){
                     }}>
                      <Card.Img src={tickets[index].info.imgSrc}/>
                     {tickets[index].info.ticketName}<br/>
-                    {tickets[index].info.placeName}<br/>
+                    {tickets[index].info.place}<br/>
                     {tickets[index].info.expired}<br/>
                     {tickets[index].info.webUrl}<br/>
                     {tickets[index].info.canTrade == true ? <>교환 가능</>: <>교환 불가능</>}
-                    Price : {tickets[index].info.price}Klay<br/>
+                    Price : {tickets[index].price}Klay<br/>
                   </Card>
                   </div>
     }

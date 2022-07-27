@@ -14,7 +14,7 @@ function Tickets({tickets, clickTicket}){
                     }}>
                      <Card.Img className='imgSrc' src={tickets[rowIndex*2].info.imgSrc}/>
                     <span className='ticketName'>{tickets[rowIndex*2].info.ticketName}</span>
-                    <span className='placeName'>{tickets[rowIndex*2].info.placeName}</span>
+                    <span className='placeName'>{tickets[rowIndex*2].info.place}</span>
                     <span className='expired'>{tickets[rowIndex*2].info.expired}</span>
                     <a href={tickets[rowIndex*2].info.webUrl} target={'blank'} className='webUrl'>{tickets[rowIndex*2].info.webUrl}</a>
                     <span className='canTrade'>{tickets[rowIndex*2].info.canTrade == true ? <>교환 가능</>: <>교환 불가능</>}</span>
