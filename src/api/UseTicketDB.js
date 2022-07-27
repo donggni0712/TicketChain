@@ -11,12 +11,11 @@ export const getTicketInfo = async (_id)=>{
     }
   }
 
-  let body = {
-    "id":_id
-  }
   return await axios
-    .post(TICKETDB_USER_URL, body,header)
+    .post(TICKETDB_USER_URL, `{"id":${_id}}`,header)
     .then((response)=>{
+      console.log(response.data)
+      console.log("Internal")
       return response.data;
     })
 }

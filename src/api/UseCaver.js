@@ -59,7 +59,6 @@ export const fetchTicketsBySellerOf = async (address)=>{
   const tokenIds = [];
   for(let i=0;i<_balance;i++){
     const id = await  TICKETMARKETContract.methods.ticketOfSellerByIndex(address, i).call();
-    console.log(`id = ${id}`)
     tokenIds.push(id);
   }
   // Fetch Token Names
@@ -69,7 +68,7 @@ export const fetchTicketsBySellerOf = async (address)=>{
     const _ticketId = await  TICKETCHAINContract.methods.ticketId(tokenIds[i]).call();
     var _Price = await TICKETCHAINContract.methods.ticketPrice(tokenIds[i]).call();
     _Price = _Price/1000000000000000000;
-    console.log(_ticketId)
+    console.log(`ticketid=${_ticketId}`)
     const _ticketInfo = await getTicketInfo(_ticketId)
     console.log(_ticketInfo)
     ticketInfos.push(_ticketInfo);
