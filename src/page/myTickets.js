@@ -45,7 +45,7 @@ function MyTickets({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalDat
       <QrComponent qrvalue={qrvalue} setQrvalue ={setQrvalue}/>
 
       {isMobile ? <TicketSilder tickets={tickets} clickTicket={clickTicket} /> : <Tickets tickets={tickets} clickTicket={clickTicket}/>}
-      <PopUp showModal={showModal} setShowModal={setShowModal} modalData={modalData}/>
+      {/* <PopUp showModal={showModal} setShowModal={setShowModal} modalData={modalData}/> */}
 
     </div>
   );

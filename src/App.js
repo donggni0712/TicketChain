@@ -8,6 +8,7 @@ import Head from './component/head'
 import MyPage from './page/MyPage'
 import {useState, useEffect} from 'react';
 import * as KlipAPI from "./api/UseKlip"
+import PopUp from './component/modal';
 
 import {DEFAULT_ADDRESS,DEFAULT_QR_CODE} from './env';
 
@@ -42,9 +43,11 @@ function App() {
         {tab=="MYTICKET" ? <MyTickets myAddress={myAddress} qrvalue={qrvalue} setQrvalue={setQrvalue} showModal={showModal} setShowModal={setShowModal} modalData={modalData} setTab={setTab}/> : null}
         {tab=="STORE" ? <Store myAddress={myAddress} qrvalue={qrvalue} setQrvalue={setQrvalue} showModal={showModal} setShowModal={setShowModal} modalData={modalData} setModalData={setModalData}/> : null}
         {tab=="TRANSFER" ? <Transfer myAddress={myAddress} qrvalue={qrvalue} setQrvalue={setQrvalue} showModal={showModal} setShowModal={setShowModal} modalData={modalData} setTab={setTab} setModalData={setModalData}/> : null}
-        {tab=="MYPAGE" ? <MyPage/> : null}
+        {tab=="MYPAGE" ? <MyPage setModalData={setModalData} setShowModal={setShowModal} myAdress={myAddress} setQrvalue={setQrvalue}/> : null}
       </div>
       <Footer setTab={setTab}/>
+      <PopUp showModal={showModal} setShowModal={setShowModal} modalData={modalData}/>
+
     </div>
   );
 }

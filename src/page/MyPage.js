@@ -1,8 +1,9 @@
 import { Button } from "react-bootstrap";
 import {useState} from "react"
 import MakeTicket from "../component/makeTicket.js";
+import MintTicket from "../component/mintTicket.js"
 
-function MyPage () {
+function MyPage ({setShowModal,setModalData, myAdress, setQrvalue}) {
       const [component, setComponent] = useState("MyPage");
 
     return <div>
@@ -11,8 +12,11 @@ function MyPage () {
         <Button onClick={()=>{setComponent("Make")}}>
             Make Ticket
         </Button>
-
-        {component=="Make" ? <MakeTicket/> : null}
+        <Button onClick={()=>{setComponent("Mint")}}>
+            Mint Ticket
+        </Button>
+        {component=="Make" ? <MakeTicket setShowModal={setShowModal} setModalData={setModalData} /> : null}
+        {component=="Mint" ? <MintTicket setModalData={setModalData} myAdress={myAdress} setQrvalue={setQrvalue} setShowModal={setShowModal}/> : null}
         
     </div>
 }

@@ -2,7 +2,7 @@ import { useState } from "react";
 import {makeTicekt} from '../api/UseTicketDB.js'
 import {Form,Card,Button} from 'react-bootstrap'
 
-function MakeTicket(){
+function MakeTicket({setModalData,setShowModal}){
     const [ticketId,setTicketId] = useState(0);
     const [ticketName, setTicketName] = useState("");
     const [place, setPlace] = useState("");
@@ -12,7 +12,12 @@ function MakeTicket(){
     const [canTrade,setCanTrade] = useState(false);
 
     const ClickMake = async (ticketName, place, expired, canTrade, imgSrc, webUrl) =>{
-        makeTicekt(ticketName,place,expired,canTrade,imgSrc,webUrl);
+        setModalData({
+            title:"티켓 생성",
+            content:"티켓을 생성하시겠습니까?",
+            onConfirm: ()=>{makeTicekt(ticketName,place,expired,canTrade,imgSrc,webUrl)}
+        })
+        setShowModal(true)
     };
 
     return <div>
@@ -92,8 +97,8 @@ function MakeTicket(){
                     />
                 </Form.Group>
                 <Button
-                onClick={()=>ClickMake(ticketName,place,expired,canTrade,imgSrc,webUrl)} 
-                variant="primary" style={{backgroundColor:"#810034", borderColor:"#810034", marginTop:"1rem"}}>전송하기</Button>
+                onClick={()=>ClickMake(ticketId,ticketName,place,expired,canTrade,imgSrc,webUrl)} 
+                variant="primary" style={{backgroundColor:"#810034", borderColor:"#810034", marginTop:"1rem"}}>생성하기</Button>
                 </Form>
             </Card.Body>
         </Card>
