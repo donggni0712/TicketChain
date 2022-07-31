@@ -18,6 +18,15 @@ function Store({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData, s
   const [tab, setTab] = useState("STORE");
 
   const buyTicket = (id) =>{
+    if(myAddress==DEFAULT_ADDRESS){
+      setModalData({
+      title:"지갑 연동 필요",
+      content:"지갑을 먼저 연동하세요",
+      onConfirm: ()=>{}
+    })
+    setShowModal(true)
+    return;
+    }
     setModalData({
       title:"티켓 구매",
       content:"티켓을 구매하시겠습니까?",
@@ -126,7 +135,7 @@ function Store({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData, s
   return (
     <div className="MyTickets">
 
-        <QrComponent qrvalue={qrvalue} setQrvalue ={setQrvalue}/>
+        <QrComponent qrvalue={qrvalue} setQrvalue ={setQrvalue} text={"qr코드를 스캔해 진행하세요"}/>
         <Tabs
           activeKey={tab}
           onSelect={(k) => setTab(k)}

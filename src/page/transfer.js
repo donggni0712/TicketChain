@@ -10,6 +10,7 @@ import TransferToWallet from '../component/transferToWallet';
 import Tickets from '../component/tickets';
 import PopUp from '../component/modal';
 import QrComponent from '../component/qrcode';
+import { DEFAULT_ADDRESS } from '../env';
 
 const isMobile = window.screen.width >= 1280 ? false : true;
 
@@ -63,13 +64,15 @@ function Transfer({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData
   }
 
   useEffect((el)=>{
+    if(myAddress==DEFAULT_ADDRESS){
+      return;
+    }
     fetchMyTickets()
   },[])
 
   return (
     <div className="Transfer">
-      <div>전송할 티켓을 고르세용</div>
-      <QrComponent qrvalue={qrvalue} setQrvalue ={setQrvalue}/>
+      <QrComponent qrvalue={qrvalue} setQrvalue ={setQrvalue} text={"QR코드를 스캔해 진행하세요"}/>
 
       {component=="Tickets" ? <Tickets tickets={tickets} clickTicket={clickTicket}/> : null}
       {component=="Transfer" ? <TransferToWallet myaddress={tickets} ticketInfo={selectedTicket} setQrvalue={setQrvalue}/> : null}

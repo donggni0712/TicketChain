@@ -8,8 +8,8 @@ import {useState, useEffect} from 'react';
 //Components
 import TicketSilder from '../component/ticketSlider';
 import Tickets from '../component/tickets';
-import PopUp from '../component/modal';
 import QrComponent from '../component/qrcode';
+import { DEFAULT_ADDRESS } from '../env';
 
 const isMobile = window.screen.width >= 1280 ? false : true;
 
@@ -36,13 +36,16 @@ function MyTickets({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalDat
   }
 
   useEffect((el)=>{
+    if(myAddress==DEFAULT_ADDRESS){
+      return;
+    }
     fetchMyTickets()
   },[])
 
   return (
     <div className="MyTickets">
 
-      <QrComponent qrvalue={qrvalue} setQrvalue ={setQrvalue}/>
+      <QrComponent qrvalue={qrvalue} setQrvalue ={setQrvalue} text={"QR코드로 티켓을 사용하세요"}/>
 
       {isMobile ? <TicketSilder tickets={tickets} clickTicket={clickTicket} /> : <Tickets tickets={tickets} clickTicket={clickTicket}/>}
       {/* <PopUp showModal={showModal} setShowModal={setShowModal} modalData={modalData}/> */}
