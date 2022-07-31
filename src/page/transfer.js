@@ -74,7 +74,7 @@ function Transfer({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData
     <div className="Transfer">
       <QrComponent qrvalue={qrvalue} setQrvalue ={setQrvalue} text={"QR코드를 스캔해 진행하세요"}/>
 
-      {component=="Tickets" ? <Tickets tickets={tickets} clickTicket={clickTicket}/> : null}
+      {component=="Tickets" ? <div><div>전송할 티켓을 고르세요</div><Tickets tickets={tickets} clickTicket={clickTicket}/></div> : null}
       {component=="Transfer" ? <TransferToWallet myaddress={tickets} ticketInfo={selectedTicket} setQrvalue={setQrvalue}/> : null}
 
       <PopUp showModal={showModal} setShowModal={setShowModal} modalData={modalData}/>
