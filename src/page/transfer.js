@@ -6,11 +6,12 @@ import {useState, useEffect} from 'react';
 
 
 //Components
-import TransferToWallet from '../component/transferToWallet';
-import Tickets from '../component/tickets';
-import PopUp from '../component/modal';
-import QrComponent from '../component/qrcode';
+import TransferToWallet from '../components/submit/transferToWallet';
+import Tickets from '../components/query/tickets';
+import PopUp from '../components/modal/modal';
+import QrComponent from '../components/modal/qrcode';
 import { DEFAULT_ADDRESS } from '../env';
+import Title from '../components/title.js'
 
 const isMobile = window.screen.width >= 1280 ? false : true;
 
@@ -68,10 +69,11 @@ function Transfer({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData
       return;
     }
     fetchMyTickets()
-  },[])
+  },[myAddress,tickets])
 
   return (
     <div className="Transfer">
+      <Title text="Transfer"/>
       <QrComponent qrvalue={qrvalue} setQrvalue ={setQrvalue} text={"QR코드를 스캔해 진행하세요"}/>
 
       {component=="Tickets" ? <div><div>전송할 티켓을 고르세요</div><Tickets tickets={tickets} clickTicket={clickTicket}/></div> : null}

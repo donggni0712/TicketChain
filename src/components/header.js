@@ -1,6 +1,6 @@
 import {Alert, Button} from 'react-bootstrap';
 import {DEFAULT_ADDRESS} from '../env'
-import './head.css'
+import './header.css'
 
 function Head({myAddress,getUserData,setTab}){
 

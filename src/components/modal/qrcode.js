@@ -1,7 +1,7 @@
 import {Container, Modal} from 'react-bootstrap';
-import {DEFAULT_QR_CODE} from '../env'
+import {DEFAULT_QR_CODE} from '../../env'
 import QRCode from "qrcode.react";
-import './qrcode.css'
+import './modal.css'
 
 function QrComponent({qrvalue, setQrvalue, text}){
 

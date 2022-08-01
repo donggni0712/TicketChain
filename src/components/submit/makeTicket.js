@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {makeTicekt} from '../api/UseTicketDB.js'
+import {makeTicekt} from '../../api/UseTicketDB.js'
 import {Form,Card,Button} from 'react-bootstrap'
 
 function MakeTicket({setModalData,setShowModal}){

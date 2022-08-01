@@ -6,17 +6,18 @@ import {Tab,Tabs} from 'react-bootstrap';
 
 
 //Components
-import Tickets from '../component/tickets';
-import PopUp from '../component/modal';
-import QrComponent from '../component/qrcode';
+import Tickets from '../components/query/tickets';
+import PopUp from '../components/modal/modal';
+import QrComponent from '../components/modal/qrcode';
 import {TICKET_MARKET_CONTRACT_ADDRESS} from '../env'
 import * as KlipAPI from '../api/UseKlip'
+import Title from "../components/title.js"
 
 import {DEFAULT_ADDRESS} from '../env';
 
 function Store({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData, setModalData}) {
   const [tab, setTab] = useState("STORE");
-
+  const [text,setText] = useState("Store")
   const buyTicket = (id) =>{
     if(myAddress==DEFAULT_ADDRESS){
       setModalData({
@@ -111,6 +112,7 @@ function Store({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData, s
   useEffect((el)=>{
     if(tab=="STORE"){
       fetchTickets(TICKET_MARKET_CONTRACT_ADDRESS)
+      setText("Stroe")
     }
     if(tab=="MYTICKETS"){
       if(myAddress==DEFAULT_ADDRESS){
@@ -120,6 +122,7 @@ function Store({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData, s
         return;
       }
       fetchTickets(myAddress);
+      setText("Stroe > MyTickets")
     }
     if(tab=="MYSTORE"){
       if(myAddress==DEFAULT_ADDRESS){
@@ -129,19 +132,20 @@ function Store({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData, s
         return;
       }
       fetchTicketsBySeller(myAddress)
+      setText("Stroe > MyStore")
     }
-  },[tab])
+  },[tab,myAddress,tickets])
   
   return (
     <div className="MyTickets">
-
+        <Title text={text}/>
         <QrComponent qrvalue={qrvalue} setQrvalue ={setQrvalue} text={"qr코드를 스캔해 진행하세요"}/>
         <Tabs
           activeKey={tab}
           onSelect={(k) => setTab(k)}
           className="mb-3"
         >
-          <Tab eventKey="STORE" title="상점" onClick={()=>setTab("STORE")}>
+          <Tab eventKey="STORE"  title="상점" onClick={()=>setTab("STORE")}>
           </Tab>
           <Tab eventKey="MYSTORE" title="내가 판매중인 티켓" onClick={()=>setTab("MYSTORE")}>
           </Tab>

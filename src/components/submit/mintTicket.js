@@ -1,6 +1,6 @@
 import {useState} from 'react'
 import {Card, Form, Button} from 'react-bootstrap'
-import * as KlipAPI from '../api/UseKlip'
+import * as KlipAPI from '../../api/UseKlip'
 
 function MintTicket({setModalData, myAdress, setQrvalue, setShowModal}){
     const [ticketId,setTicketId] = useState("")

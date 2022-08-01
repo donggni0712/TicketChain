@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import * as KlipAPI from '../api/UseKlip'
+import * as KlipAPI from '../../api/UseKlip'
 import {Card, Form, Button} from 'react-bootstrap'
 
 function TransferToWallet({myAddress, ticketInfo, setQrvalue}){

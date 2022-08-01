@@ -1,6 +1,6 @@
 import {Container, Modal} from 'react-bootstrap';
 import {DEFAULT_QR_CODE} from '../env'
-import './qrcode.css'
+import './modal.css'
 
 function TicketInfo({qrvalue, setQrvalue, ticket, text, callback}){
 

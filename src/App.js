@@ -3,12 +3,12 @@ import './App.css';
 import MyTickets from './page/myTickets'
 import Store from './page/store'
 import Transfer from './page/transfer'
-import Footer from './component/footer'
-import Head from './component/head'
+import Footer from './components/footer'
+import Head from './components/header'
 import MyPage from './page/MyPage'
 import {useState, useEffect} from 'react';
 import * as KlipAPI from "./api/UseKlip"
-import PopUp from './component/modal';
+import PopUp from './components/modal/modal';
 
 import {DEFAULT_ADDRESS,DEFAULT_QR_CODE} from './env';
 

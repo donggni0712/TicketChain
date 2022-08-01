@@ -6,10 +6,11 @@ import {useState, useEffect} from 'react';
 
 
 //Components
-import TicketSilder from '../component/ticketSlider';
-import Tickets from '../component/tickets';
-import QrComponent from '../component/qrcode';
+import TicketSilder from '../components/query/ticketSlider';
+import Tickets from '../components/query/tickets';
+import QrComponent from '../components/modal/qrcode';
 import { DEFAULT_ADDRESS } from '../env';
+import Title from "../components/title.js"
 
 const isMobile = window.screen.width >= 1280 ? false : true;
 
@@ -40,11 +41,11 @@ function MyTickets({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalDat
       return;
     }
     fetchMyTickets()
-  },[])
+  },[myAddress,tickets])
 
   return (
     <div className="MyTickets">
-
+      <Title text="MyTickets"/>
       <QrComponent qrvalue={qrvalue} setQrvalue ={setQrvalue} text={"QR코드로 티켓을 사용하세요"}/>
 
       {isMobile ? <TicketSilder tickets={tickets} clickTicket={clickTicket} /> : <Tickets tickets={tickets} clickTicket={clickTicket}/>}

@@ -19,3 +19,21 @@
 .nav-link:hover {
     color: #881b60;
 }
+
+.Button {
+    background-color: #9c003e;
+    border-color: #9c003e;
+    margin-right: 3rem;
+    margin-bottom: 3rem;
+}
+
+.Button:hover {
+    background-color: #810034;
+    border-color: #810034;
+}
+
+.title{
+    background-color: #3e0019;
+    border-color: #3e0019;
+    color: wheat;
+}
