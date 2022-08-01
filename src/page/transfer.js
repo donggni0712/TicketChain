@@ -69,7 +69,7 @@ function Transfer({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData
       return;
     }
     fetchMyTickets()
-  },[myAddress,tickets])
+  },[myAddress])
 
   return (
     <div className="Transfer">

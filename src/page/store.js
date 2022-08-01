@@ -134,7 +134,7 @@ function Store({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData, s
       fetchTicketsBySeller(myAddress)
       setText("Stroe > MyStore")
     }
-  },[tab,myAddress,tickets])
+  },[tab,myAddress])
   
   return (
     <div className="MyTickets">

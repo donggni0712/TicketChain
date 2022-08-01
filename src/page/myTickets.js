@@ -41,7 +41,7 @@ function MyTickets({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalDat
       return;
     }
     fetchMyTickets()
-  },[myAddress,tickets])
+  },[myAddress])
 
   return (
     <div className="MyTickets">
