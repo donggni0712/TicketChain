@@ -16,13 +16,14 @@ KIP17을 활용한 Smart_Contract 설계
 
 ![](./doc/TicketChainFlowChart.png)
 
-| 사용 스택 | 활용 방안                                         |
-| :-------- | :------------------------------------------------ |
-| Klaytn    | Cypress MainNet을 사용                            |
-| CaverJS   | klaytn node api를 이용하여 블록체인 데이터를 읽음 |
-| Klip API  | 사용자의 Klip계정 권한을 사용할 수 있도록 함      |
-| NodeJS    | API를 호출하고, 데이터를 파싱함                   |
-| ReactJS   | 유저에게 보여줄 화면 생성                         |
+| 사용 스택 | 활용 방안                                             |
+| :-------- | :---------------------------------------------------- |
+| Klaytn    | Cypress MainNet을 사용                                |
+| CaverJS   | klaytn node api를 이용하여 블록체인 데이터를 읽음     |
+| Klip API  | 사용자의 Klip계정 권한을 사용할 수 있도록 함          |
+| NodeJS    | API를 호출하고, 데이터를 파싱함                       |
+| ReactJS   | 유저에게 보여줄 화면 생성                             |
+| AWS       | 티켓정보를 오프체인으로 보관하는 서버리스 백엔드 구현 |
 
 ## Requirement
 
