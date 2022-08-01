@@ -32,7 +32,6 @@ export const fetchTicketsOf = async (address)=>{
   // Fetch Token Names
   const ticketInfos = [];
   for(let i=0;i<_balance;i++){
-    const _id = tokenIds[i];
     const _ticketId = await  TICKETCHAINContract.methods.ticketId(tokenIds[i]).call();
     var _Price = await TICKETCHAINContract.methods.ticketPrice(tokenIds[i]).call();
     _Price = _Price/1000000000000000000;

@@ -10,7 +10,7 @@ import Tickets from '../components/query/tickets';
 import PopUp from '../components/modal/modal';
 import QrComponent from '../components/modal/qrcode';
 import {TICKET_MARKET_CONTRACT_ADDRESS} from '../env'
-import * as KlipAPI from '../api/UseKlip'
+import * as KlipAPI from '../api/UseKlip.js'
 import Title from "../components/title.js"
 
 import {DEFAULT_ADDRESS} from '../env';
@@ -93,7 +93,8 @@ function Store({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData, s
   }
 
   const clickTicket = (ticket) =>{
-    let id = ticket.info.id
+    let id = ticket.id
+    console.log(`ticekt ID = ${id}`)
     if(tab=="STORE"){
       buyTicket(id)
     }

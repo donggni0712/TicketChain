@@ -26,7 +26,6 @@ export const makeTicekt = async (_id,_ticketName,_place,_expired,_canTrade,_imgS
     headers: {
       'x-api-key':CREATER_API_KEY,
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': "*",
     }
   }
   console.log(`{"id":${_id},"ticketName":"${_ticketName}","place":"${_place}","expired":"${_expired}","canTrade":${_canTrade},"imgSrc":"${_imgSrc}","webUrl":"${_webUrl}"}`)

@@ -35,14 +35,12 @@ function Transfer({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData
         return;
       }
     let id = ticket.info.id
-    console.log('start')
-    console.log(id)
-    console.log(tickets)
     let _ticket = tickets.reduce((res,el)=>{
       console.log(el)
       if(el.info.id==id){
         return res = {
-          id : el.info.id,
+          id : ticket.id,
+          ticketid : el.info.id,
           ticketName : el.info.ticketname,
           placeName : el.info.placeName,
           expired : el.info.expired,
@@ -52,7 +50,6 @@ function Transfer({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData
         }
       }
     },{})
-    console.log('ticketInfo')
     console.log(_ticket)
     setSelectedTicket(_ticket)
     setComponent("Transfer");
@@ -60,7 +57,6 @@ function Transfer({myAddress,qrvalue,setQrvalue,showModal,setShowModal,modalData
 
   const fetchMyTickets = async () =>{
     const _tickets = await fetchTicketsOf(myAddress)
-    console.log(_tickets)
     setTickets(_tickets);
   }
 
